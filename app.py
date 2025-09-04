@@ -57,6 +57,26 @@ def create_admin():
     db.session.commit()
     click.echo(f"Admin user '{{username}}' created successfully.")
 
+@app.cli.command("seed-admin")
+@with_appcontext
+def seed_admin():
+    """Creates a default admin user if none exists. USE ONLY FOR INITIAL DEPLOYMENT!"""
+    from models import User, db # Import here to avoid circular dependency issues
+    default_username = "admin"
+    default_password = "adminpassword" # !!! CHANGE THIS IMMEDIATELY AFTER LOGIN !!!
+
+    user = User.query.filter_by(username=default_username).first()
+    if user:
+        click.echo(f"Default admin user '{default_username}' already exists. Skipping seeding.")
+        return
+
+    new_admin = User(username=default_username)
+    new_admin.set_password(default_password)
+    db.session.add(new_admin)
+    db.session.commit()
+    click.echo(f"Default admin user '{default_username}' created successfully.")
+    click.echo("!!! IMPORTANT: Log in immediately and change the password for 'admin' !!!")
+
 # Clases de Vistas Seguras para Admin
 class SecuredModelView(ModelView):
     def is_accessible(self):
