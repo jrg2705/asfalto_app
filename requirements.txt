@@ -7,3 +7,4 @@ flask_migrate
 python-dotenv
 Flask-Login
 gunicorn
+psycopg2-binary
