@@ -94,7 +94,29 @@ class MyAdminIndexView(AdminIndexView):
 
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
-admin.add_view(SecuredModelView(User, db.session))
+
+# Custom User ModelView
+from wtforms import PasswordField
+from wtforms.validators import DataRequired
+
+class UserAdminView(SecuredModelView):
+    column_list = ('username',) # Only show username in list view
+    form_columns = ('username', 'password') # Show username and a new 'password' field in form
+
+    form_extra_fields = {
+        'password': PasswordField('Password', validators=[DataRequired()])
+    }
+
+    def on_model_change(self, form, model, is_created):
+        if form.password.data: # Only hash if password field is provided
+            model.set_password(form.password.data)
+        elif is_created:
+            raise ValueError("Password is required for new users.")
+
+        return super(UserAdminView, self).on_model_change(form, model, is_created)
+
+admin.add_view(UserAdminView(User, db.session))
+
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
 admin.add_view(SecuredModelView(Project, db.session))
