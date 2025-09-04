@@ -100,24 +100,29 @@ from wtforms import PasswordField
 from wtforms.validators import DataRequired
 
 class UserAdminView(SecuredModelView):
-    column_list = ['username'] # Changed to list
-    form_columns = ['username', 'password'] # Changed to list
+    form = UserForm # <-- Usamos nuestro formulario personalizado
 
-    form_extra_fields = {
-        'password': PasswordField('Password', validators=[DataRequired()])
-    }
-
+    # on_model_change sigue siendo necesario para hashear la contraseña
     def on_model_change(self, form, model, is_created):
         if form.password.data: # Only hash if password field is provided
             model.set_password(form.password.data)
         elif is_created and not form.password.data:
             raise ValueError("Password is required for new users.")
-        elif not is_created and not form.password.data: # If editing and password field is empty, keep existing password_hash
-            pass # Do nothing, keep existing password_hash
+        elif not is_created and not form.password.data:
+            pass # Mantener la contraseña existente si no se proporciona una nueva
         
         return super(UserAdminView, self).on_model_change(form, model, is_created)
 
-admin.add_view(UserAdminView(User, db.session))
+admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
+
+admin.add_view(SecuredModelView(User, db.session))
+
+admin.add_view(SecuredModelView(SiteSetting, db.session))
+admin.add_view(SecuredModelView(Service, db.session))
+admin.add_view(SecuredModelView(Project, db.session))
+admin.add_view(SecuredModelView(SuccessStory, db.session))
+admin.add_view(SecuredModelView(ContactMessage, db.session))
+admin.add_view(SecuredModelView(PopupMessage, db.session))
 
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
