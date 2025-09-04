@@ -48,14 +48,14 @@ def create_admin():
     
     user = User.query.filter_by(username=username).first()
     if user:
-        click.echo(f"User '{{username}}' already exists.")
+        click.echo(f"User '{username}' already exists.")
         return
 
     new_admin = User(username=username)
     new_admin.set_password(password)
     db.session.add(new_admin)
     db.session.commit()
-    click.echo(f"Admin user '{{username}}' created successfully.")
+    click.echo(f"Admin user '{username}' created successfully.")
 
 @app.cli.command("seed-admin")
 @with_appcontext
@@ -94,36 +94,7 @@ class MyAdminIndexView(AdminIndexView):
 
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
-
-# Custom User ModelView
-from wtforms import PasswordField
-from wtforms.validators import DataRequired
-
-class UserAdminView(SecuredModelView):
-    form = UserForm # <-- Usamos nuestro formulario personalizado
-
-    # on_model_change sigue siendo necesario para hashear la contraseña
-    def on_model_change(self, form, model, is_created):
-        if form.password.data: # Only hash if password field is provided
-            model.set_password(form.password.data)
-        elif is_created and not form.password.data:
-            raise ValueError("Password is required for new users.")
-        elif not is_created and not form.password.data:
-            pass # Mantener la contraseña existente si no se proporciona una nueva
-        
-        return super(UserAdminView, self).on_model_change(form, model, is_created)
-
-admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
-
 admin.add_view(SecuredModelView(User, db.session))
-
-admin.add_view(SecuredModelView(SiteSetting, db.session))
-admin.add_view(SecuredModelView(Service, db.session))
-admin.add_view(SecuredModelView(Project, db.session))
-admin.add_view(SecuredModelView(SuccessStory, db.session))
-admin.add_view(SecuredModelView(ContactMessage, db.session))
-admin.add_view(SecuredModelView(PopupMessage, db.session))
-
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
 admin.add_view(SecuredModelView(Project, db.session))
@@ -199,7 +170,6 @@ def contact():
         return redirect(url_for("contact"))
     return render_template("contact.html", form=form)
 
-
 @app.route("/footer-contact", methods=["POST"])
 def footer_contact():
     form = FooterContactForm()
@@ -222,7 +192,6 @@ def footer_contact():
         flash("Hubo un error en tu formulario. Por favor, revisa los campos.", "danger")
     
     return redirect(redirect_url)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
