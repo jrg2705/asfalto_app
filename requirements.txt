@@ -6,3 +6,4 @@ email-validator
 flask_migrate
 python-dotenv
 Flask-Login
+gunicorn
