@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Video Section -->
+<section class="hero-video-section">
+    <video playsinline autoplay muted loop poster="{{ url_for('static', filename='images/hero.png') }}" id="bgvideo">
+        <!-- **IMPORTANTE**: REEMPLAZA ESTE VIDEO CON EL TUYO -->
+        <source src="{{ url_for('static', filename='videos/placeholder.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="container h-100">
+        <div id="heroCardCarousel" class="carousel slide h-100 d-flex align-items-center">
+            <div class="carousel-inner">
+                <!-- Card Slide 1 -->
+                <div class="carousel-item active">
+                    <div class="hero-card">
+                        <h1 class="display-4">Soluciones en Asfalto</h1>
+                        <p class="lead">Construcción, pavimentación y mantenimiento con calidad garantizada.</p>
+                        <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg">Nuestros Servicios</a>
+                    </div>
+                </div>
+                <!-- Card Slide 2 -->
+                <div class="carousel-item">
+                    <div class="hero-card">
+                        <h1 class="display-4">Proyectos de Calidad</h1>
+                        <p class="lead">Infraestructura vial que perdura en el tiempo.</p>
+                        <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg">Ver Proyectos</a>
+                    </div>
+                </div>
+                <!-- Card Slide 3 -->
+                <div class="carousel-item">
+                    <div class="hero-card">
+                        <h1 class="display-4">Contacta con Expertos</h1>
+                        <p class="lead">Obtén una cotización para tu próximo gran proyecto.</p>
+                        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Contáctanos</a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCardCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCardCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview -->
+<section class="services-preview py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Servicios Destacados</h2>
+            <p>Ofrecemos soluciones integrales para tus proyectos de pavimentación.</p>
+        </div>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-md-4">
+                <div class="card text-center">
+                    {% if service.icon_url %}
+                    <img src="{{ service.icon_url }}" alt="{{ service.title }}" class="card-img-top mx-auto" style="width: 80px; height: 80px;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h3 class="card-title">{{ service.title }}</h3>
+                        <p class="card-text">{{ service.description|truncate(100) }}</p>
+                        <a href="{{ url_for('services') }}" class="btn btn-sm btn-outline-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center">No hay servicios para mostrar en este momento.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent Projects -->
+<section class="projects-preview bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Proyectos Recientes</h2>
+            <p>Echa un vistazo a algunos de nuestros trabajos más recientes.</p>
+        </div>
+        <div class="row">
+            {% for project in projects|batch(3)|first %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ project.image_url if project.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="card-img-top" alt="{{ project.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description|truncate(80) }}</p>
+                        <a href="{{ url_for('project_detail', id=project.id) }}" class="btn btn-primary">Ver Proyecto</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center">No hay proyectos para mostrar.</p>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('projects') }}" class="btn btn-outline-dark">Ver todos los proyectos</a>
+        </div>
+    </div>
+</section>
+
+<!-- Success Stories -->
+<section class="success-stories-preview py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Historias de Éxito</h2>
+            <p>Vea cómo nuestras soluciones han impactado proyectos reales.</p>
+        </div>
+        <div class="row">
+            {% for story in stories %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ story.image_url if story.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="card-img-top" alt="{{ story.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ story.title }}</h5>
+                        <p class="card-text flex-grow-1">{{ story.description|truncate(120) }}</p>
+                        <footer class="blockquote-footer mt-2">{{ story.customer_or_category }}</footer>
+                        <a href="#" class="btn btn-sm btn-outline-primary mt-auto">Leer Más</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center">No hay historias de éxito para mostrar en este momento.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta bg-primary text-white text-center py-5">
+    <div class="container">
+        <h2>¿Listo para empezar tu próximo proyecto?</h2>
+        <p>Contáctanos hoy mismo para obtener una cotización sin compromiso.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg">Contáctanos</a>
+    </div>
+</section>
+
+<!-- Welcome Modal -->
+{% if popup %}
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-papyrus">
+      <div class="modal-header modal-header-yellow">
+        <h5 class="modal-title" id="welcomeModalLabel">{{ popup.title }}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ popup.content | safe }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-modal-custom" data-bs-dismiss="modal">{{ popup.button_text }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Muestra el modal solo si no se ha mostrado antes en esta sesión
+    if (!sessionStorage.getItem('welcomeModalShown')) {
+      var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+      welcomeModal.show();
+
+      // Cuando el modal se cierra, guarda un indicador en la sesión
+      document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function () {
+        sessionStorage.setItem('welcomeModalShown', 'true');
+      });
+    }
+  });
+</script>
+{% endif %}
+
+{% endblock %}

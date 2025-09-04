@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ settings.site_name if settings else "Asfalto App" }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--dark-bg);">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/logo.png') }}" alt="Logo" class="navbar-logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('services') }}">Servicios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('projects') }}">Proyectos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('contact') }}">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer mt-5" id="site-footer">
+        <div class="container">
+            <div class="row">
+                <!-- Columna Izquierda: Logo y Descripción -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/logo.png') }}" alt="Logo" class="footer-logo mb-3">
+                    <p class="footer-description">Somos una empresa líder en soluciones de asfalto, comprometida con la calidad, la innovación y la satisfacción del cliente en cada proyecto que emprendemos.</p>
+                    <a href="#">Leer Más &rarr;</a>
+                </div>
+
+                <!-- Columna Central: Enlaces -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="footer-heading">Nuestros Productos</h5>
+                            <ul class="list-unstyled footer-links">
+                                <li><a href="#">Asfalto en Caliente</a></li>
+                                <li><a href="#">Selladores</a></li>
+                                <li><a href="#">Emulsiones</a></li>
+                                <li><a href="#">Aditivos</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="footer-heading">A Quién Servimos</h5>
+                            <ul class="list-unstyled footer-links">
+                                <li><a href="#">Gobierno</a></li>
+                                <li><a href="#">Constructores</a></li>
+                                <li><a href="#">Industria</a></li>
+                                <li><a href="#">Particulares</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Formulario -->
+                <div class="col-lg-4">
+                    <h5 class="footer-heading">Contacto Rápido</h5>
+                    <!-- Flashed Messages for Footer Form -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show p-2 mb-2" role="alert">
+                                    <small>{{ message }}</small>
+                                    <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form action="{{ url_for('footer_contact') }}" method="POST" novalidate>
+                        {{ footer_form.hidden_tag() }}
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                {{ footer_form.first_name(class="form-control form-control-sm", placeholder="Nombre") }}
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                {{ footer_form.last_name(class="form-control form-control-sm", placeholder="Apellido") }}
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            {{ footer_form.email(class="form-control form-control-sm", placeholder="Dirección de Correo") }}
+                        </div>
+                        <div class="mb-2">
+                            {{ footer_form.phone(class="form-control form-control-sm", placeholder="Teléfono") }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                {{ footer_form.city(class="form-control form-control-sm", placeholder="Ciudad") }}
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                {{ footer_form.province(class="form-select form-select-sm") }}
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            {{ footer_form.comment(class="form-control form-control-sm", rows="3", placeholder="Mensaje o Comentario") }}
+                        </div>
+                        {{ footer_form.submit(class="btn btn-primary btn-sm w-100") }}
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom text-center pt-4 mt-4">
+                 <p class="mb-0">&copy; {{ settings.site_name if settings else "Asfalto App" }} {{ current_year }} - Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón Flotante de Chat -->
+    <a href="#" id="chat-float-button" class="shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+            <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+        </svg>
+        <span>Chatea con nosotros</span>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

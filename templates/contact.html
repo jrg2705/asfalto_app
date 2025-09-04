@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page Header -->
+<section class="page-header text-center py-5 bg-dark text-white">
+    <div class="container">
+        <h1 class="display-4">Contacto</h1>
+        <p class="lead">Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos a la brevedad.</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section py-5">
+    <div class="container">
+
+        <!-- Flashed Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <h3>Envíanos un mensaje</h3>
+                <form method="POST" action="{{ url_for('contact') }}" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.first_name.label(class="form-label") }}
+                            {{ form.first_name(class="form-control form-control-lg bg-dark text-white", placeholder="Tu nombre") }}
+                            {% for error in form.first_name.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Last Name -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.last_name.label(class="form-label") }}
+                            {{ form.last_name(class="form-control form-control-lg bg-dark text-white", placeholder="Tu apellido") }}
+                            {% for error in form.last_name.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control form-control-lg bg-dark text-white", placeholder="tu@email.com") }}
+                            {% for error in form.email.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Phone -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control form-control-lg bg-dark text-white", placeholder="Tu teléfono (Opcional)") }}
+                            {% for error in form.phone.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Company -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.company.label(class="form-label") }}
+                            {{ form.company(class="form-control form-control-lg bg-dark text-white", placeholder="Nombre de tu empresa (Opcional)") }}
+                            {% for error in form.company.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        <!-- Inquiry Type -->
+                        <div class="col-md-6 mb-3">
+                            {{ form.inquiry_type.label(class="form-label") }}
+                            {{ form.inquiry_type(class="form-select form-select-lg bg-dark text-white") }}
+                            {% for error in form.inquiry_type.errors %}
+                                <span class="text-danger d-block mt-1">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Message -->
+                    <div class="mb-3">
+                        {{ form.message.label(class="form-label") }}
+                        {{ form.message(class="form-control form-control-lg bg-dark text-white", rows=5, placeholder="¿En qué podemos ayudarte?") }}
+                        {% for error in form.message.errors %}
+                            <span class="text-danger d-block mt-1">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-4">
+                <h3>Información de Contacto</h3>
+                <p>Puedes encontrarnos en la siguiente dirección o contactarnos por teléfono o email.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <strong>Dirección:</strong><br>
+                        Calle Falsa 123, Springfield, USA
+                    </li>
+                    <li class="mb-3">
+                        <strong>Teléfono:</strong><br>
+                        (123) 456-7890
+                    </li>
+                    <li class="mb-3">
+                        <strong>Email:</strong><br>
+                        <a href="mailto:contacto@asfaltoapp.com">contacto@asfaltoapp.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

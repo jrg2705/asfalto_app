@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page Header -->
+<section class="page-header text-center py-5 bg-dark text-white">
+    <div class="container">
+        <h1 class="display-4">Nuestros Servicios</h1>
+        <p class="lead">Soluciones profesionales y duraderas para todo tipo de proyectos de asfalto.</p>
+    </div>
+</section>
+
+<!-- Services List -->
+<section class="services-list py-5">
+    <div class="container">
+        <div class="row gy-4">
+            {% for service in services %}
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            {% if service.icon_url %}
+                            <img src="{{ service.icon_url }}" alt="{{ service.title }}" class="me-3" style="width: 50px; height: 50px;">
+                            {% endif %}
+                            <h3 class="card-title mb-0">{{ service.title }}</h3>
+                        </div>
+                        <p class="card-text flex-grow-1">{{ service.description }}</p>
+                        <a href="{{ url_for('contact') }}" class="btn btn-sm btn-primary align-self-start">Solicitar Cotización</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col">
+                <p class="text-center">No hay servicios para mostrar en este momento. Por favor, vuelve a consultar más tarde.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

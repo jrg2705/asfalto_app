@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Page Header -->
+<section class="page-header text-center py-5 bg-dark text-white">
+    <div class="container">
+        <h1 class="display-4">Nuestros Proyectos</h1>
+        <p class="lead">Calidad y durabilidad en cada trabajo que realizamos.</p>
+    </div>
+</section>
+
+<!-- Projects Grid -->
+<section class="projects-grid py-5">
+    <div class="container">
+        <div class="row gy-4">
+            {% for project in projects %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="{{ project.image_url if project.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text flex-grow-1">{{ project.description|truncate(120) }}</p>
+                        <a href="{{ url_for('project_detail', id=project.id) }}" class="btn btn-primary align-self-start">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col">
+                <p class="text-center">No hay proyectos para mostrar en este momento. Por favor, vuelve a consultar más tarde.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

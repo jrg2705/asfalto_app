@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Project Title -->
+            <h1 class="display-4 mb-4">{{ project.title }}</h1>
+
+            <!-- Project Image -->
+            <img src="{{ project.image_url if project.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="img-fluid rounded mb-4" alt="{{ project.title }}">
+
+            <!-- Project Description -->
+            <div class="project-description">
+                <h3>Descripción del Proyecto</h3>
+                <p style="white-space: pre-wrap;">{{ project.description }}</p>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Back Button -->
+            <div class="text-center">
+                <a href="{{ url_for('projects') }}" class="btn btn-primary">← Volver a Proyectos</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
