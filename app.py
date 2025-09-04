@@ -6,7 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, current_user, login_user, logout_user
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
-from forms import ContactForm, FooterContactForm, LoginForm, UserForm
+from forms import ContactForm, FooterContactForm, LoginForm
 from flask.cli import with_appcontext
 import click
 from datetime import datetime
