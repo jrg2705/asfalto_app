@@ -100,8 +100,8 @@ from wtforms import PasswordField
 from wtforms.validators import DataRequired
 
 class UserAdminView(SecuredModelView):
-    column_list = ('username',) # Only show username in list view
-    form_columns = ('username', 'password') # Show username and a new 'password' field in form
+    column_list = ['username'] # Changed to list
+    form_columns = ['username', 'password'] # Changed to list
 
     form_extra_fields = {
         'password': PasswordField('Password', validators=[DataRequired()])
@@ -110,9 +110,11 @@ class UserAdminView(SecuredModelView):
     def on_model_change(self, form, model, is_created):
         if form.password.data: # Only hash if password field is provided
             model.set_password(form.password.data)
-        elif is_created:
+        elif is_created and not form.password.data:
             raise ValueError("Password is required for new users.")
-
+        elif not is_created and not form.password.data: # If editing and password field is empty, keep existing password_hash
+            pass # Do nothing, keep existing password_hash
+        
         return super(UserAdminView, self).on_model_change(form, model, is_created)
 
 admin.add_view(UserAdminView(User, db.session))
