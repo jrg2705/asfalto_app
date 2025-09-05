@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_admin import Admin, AdminIndexView
+from flask_admin.menu import MenuLink
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, current_user, login_user, logout_user
 from config import Config
@@ -114,6 +114,7 @@ admin.add_view(SecuredModelView(Project, db.session))
 admin.add_view(SecuredModelView(SuccessStory, db.session))
 admin.add_view(SecuredModelView(ContactMessage, db.session))
 admin.add_view(SecuredModelView(PopupMessage, db.session))
+admin.add_link(MenuLink(name='Logout', url='/logout'))
 
 # --- Rutas de Autenticación ---
 @app.route('/login', methods=['GET', 'POST'])
