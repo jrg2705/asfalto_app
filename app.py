@@ -59,25 +59,24 @@ def create_admin():
     db.session.commit()
     click.echo(f"Admin user '{username}' created successfully.")
 
-@app.cli.command("seed-admin")
+@app.cli.command("assign-role")
+@click.argument("username")
+@click.argument("role")
 @with_appcontext
-def seed_admin():
-    """Creates a default admin user if none exists. USE ONLY FOR INITIAL DEPLOYMENT!"""
-    from models import User, db # Import here to avoid circular dependency issues
-    default_username = "admin"
-    default_password = "adminpassword" # !!! CHANGE THIS IMMEDIATELY AFTER LOGIN !!!
-
-    user = User.query.filter_by(username=default_username).first()
-    if user:
-        click.echo(f"Default admin user '{default_username}' already exists. Skipping seeding.")
+def assign_role(username, role):
+    """Assigns a role to a user."""
+    if role not in ['admin', 'editor']:
+        click.echo(f"Error: Invalid role '{role}'. Must be 'admin' or 'editor'.")
         return
 
-    new_admin = User(username=default_username)
-    new_admin.set_password(default_password)
-    db.session.add(new_admin)
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        click.echo(f"Error: User '{username}' not found.")
+        return
+
+    user.role = role
     db.session.commit()
-    click.echo(f"Default admin user '{default_username}' created successfully.")
-    click.echo("!!! IMPORTANT: Log in immediately and change the password for 'admin' !!!")
+    click.echo(f"Successfully assigned role '{role}' to user '{username}'.")
 
 # Clases de Vistas Seguras para Admin
 class SecuredModelView(ModelView):
