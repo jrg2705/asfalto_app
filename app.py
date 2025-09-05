@@ -101,8 +101,8 @@ class UserAdminView(SecuredModelView):
     form_excluded_columns = ('password_hash',)
     # Añadir un campo 'password' extra al formulario
     form_extra_fields = {
-        'password': PasswordField('New Password', description='On edit, leave blank to keep the current password.')
-    }
+            'password': PasswordField('New Password')
+        }
 
     # Hashear la contraseña nueva al guardar
     def on_model_change(self, form, model, is_created):
