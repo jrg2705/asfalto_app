@@ -12,6 +12,7 @@ from wtforms.fields import PasswordField
 from flask.cli import with_appcontext
 import click
 from datetime import datetime
+from sqlalchemy import text
 
 app = Flask(__name__)
 
@@ -41,23 +42,71 @@ def create_db():
     db.create_all()
     click.echo("Base de datos creada.")
 
-@app.cli.command("create-admin")
+@app.cli.command("seed-admin")
 @with_appcontext
-def create_admin():
-    """Creates a new admin user."""
-    username = click.prompt("Enter admin username")
-    password = click.prompt("Enter admin password", hide_input=True, confirmation_prompt=True)
-    
-    user = User.query.filter_by(username=username).first()
+def seed_admin():
+    """Creates a default admin user if none exists. USE ONLY FOR INITIAL DEPLOYMENT!"""
+    from models import User, db # Import here to avoid circular dependency issues
+    default_username = "admin"
+    default_password = "adminpassword" # !!! CHANGE THIS IMMEDIATELY AFTER LOGIN !!!
+
+    user = User.query.filter_by(username=default_username).first()
     if user:
-        click.echo(f"User '{username}' already exists.")
+        click.echo(f"Default admin user '{default_username}' already exists. Skipping seeding.")
         return
 
-    new_admin = User(username=username)
-    new_admin.set_password(password)
+    new_admin = User(username=default_username)
+    new_admin.set_password(default_password)
     db.session.add(new_admin)
     db.session.commit()
-    click.echo(f"Admin user '{username}' created successfully.")
+    click.echo(f"Default admin user '{default_username}' created successfully.")
+    click.echo("!!! IMPORTANT: Log in immediately and change the password for 'admin' !!!")
+
+@app.cli.command("fix-db-version")
+@with_appcontext
+def fix_db_version():
+    """Manually sets the alembic_version in the database."""
+    try:
+        # Get the latest revision from the local migrations folder
+        from alembic.script import ScriptDirectory
+        from alembic.config import Config
+        import os
+
+        alembic_cfg = Config()
+        alembic_cfg.set_main_option("script_location", os.path.join(os.path.dirname(__file__), "migrations"))
+        script = ScriptDirectory.from_config(alembic_cfg)
+        head_revision = script.get_current_head()
+
+        if not head_revision:
+            click.echo("Error: Could not determine head revision from local migrations.")
+            return
+
+        # Execute raw SQL to update the alembic_version table
+        db.session.execute(text(f"UPDATE alembic_version SET version_num = '{head_revision}'"))
+        db.session.commit()
+        click.echo(f"Successfully stamped alembic_version to {head_revision}.")
+    except Exception as e:
+        db.session.rollback()
+        click.echo(f"Error fixing database version: {e}")
+
+@app.cli.command("assign-role")
+@click.argument("username")
+@click.argument("role")
+@with_appcontext
+def assign_role(username, role):
+    """Assigns a role to a user."""
+    if role not in ['admin', 'editor']:
+        click.echo(f"Error: Invalid role '{role}'. Must be 'admin' or 'editor'.")
+        return
+
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        click.echo(f"Error: User '{username}' not found.")
+        return
+
+    user.role = role
+    db.session.commit()
+    click.echo(f"Successfully assigned role '{role}' to user '{username}'.")
 
 @app.cli.command("assign-role")
 @click.argument("username")
