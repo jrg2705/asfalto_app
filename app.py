@@ -7,6 +7,7 @@ from flask_login import LoginManager, current_user, login_user, logout_user
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
 from forms import ContactForm, FooterContactForm, LoginForm
+from wtforms.fields import PasswordField
 from flask.cli import with_appcontext
 import click
 from datetime import datetime
@@ -92,9 +93,25 @@ class MyAdminIndexView(AdminIndexView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login', next=request.url))
 
+# Vista personalizada para el modelo User
+class UserAdminView(SecuredModelView):
+    # No mostrar el hash de la contraseña en la lista
+    column_exclude_list = ('password_hash',)
+    # No incluir el campo del hash en los formularios de creación/edición
+    form_excluded_columns = ('password_hash',)
+    # Añadir un campo 'password' extra al formulario
+    form_extra_fields = {
+        'password': PasswordField('New Password', description='On edit, leave blank to keep the current password.')
+    }
+
+    # Hashear la contraseña nueva al guardar
+    def on_model_change(self, form, model, is_created):
+        if form.password.data:
+            model.set_password(form.password.data)
+
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
-admin.add_view(SecuredModelView(User, db.session))
+admin.add_view(UserAdminView(User, db.session))
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
 admin.add_view(SecuredModelView(Project, db.session))
