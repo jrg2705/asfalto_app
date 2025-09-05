@@ -55,7 +55,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.String(256))
-    role = db.Column(db.String(20), nullable=False, default='editor')
+    role = db.Column(db.String(20), nullable=False, default='editor', server_default='editor')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
