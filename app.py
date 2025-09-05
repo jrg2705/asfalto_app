@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_admin.menu import MenuLink
+from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.menu import MenuLink
 from flask_login import LoginManager, current_user, login_user, logout_user
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
