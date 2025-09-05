@@ -98,8 +98,20 @@ class MyAdminIndexView(AdminIndexView):
 class UserAdminView(SecuredModelView):
     # Usar el formulario personalizado
     form = UserAdminForm
+
+    # Columnas a mostrar en la lista
+    column_list = ('username', 'role')
     # No mostrar el hash en la lista de usuarios
     column_exclude_list = ('password_hash',)
+
+    # Lógica de acceso
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role == 'admin'
+
+    def inaccessible_callback(self, name, **kwargs):
+        # Redirigir si el usuario no es admin
+        flash('No tienes permiso para acceder a esta página.', 'danger')
+        return redirect(url_for('admin.index'))
 
     # Hashear la contraseña nueva al guardar
     def on_model_change(self, form, model, is_created):

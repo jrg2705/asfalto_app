@@ -48,6 +48,7 @@ class FooterContactForm(FlaskForm):
 # Formulario para la vista de admin de User
 class UserAdminForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
+    role = SelectField('Role', choices=[('editor', 'Editor'), ('admin', 'Admin')], validators=[DataRequired()])
     # La contraseña es opcional para no forzar su cambio en cada edición.
     # Si se introduce algo, se valida que coincida con la confirmación.
     password = PasswordField('New Password', validators=[
