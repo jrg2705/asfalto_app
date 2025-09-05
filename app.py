@@ -6,7 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, current_user, login_user, logout_user
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
-from forms import ContactForm, FooterContactForm, LoginForm
+from forms import ContactForm, FooterContactForm, LoginForm, UserAdminForm
 from wtforms.fields import PasswordField
 from flask.cli import with_appcontext
 import click
@@ -95,14 +95,10 @@ class MyAdminIndexView(AdminIndexView):
 
 # Vista personalizada para el modelo User
 class UserAdminView(SecuredModelView):
-    # No mostrar el hash de la contraseña en la lista
+    # Usar el formulario personalizado
+    form = UserAdminForm
+    # No mostrar el hash en la lista de usuarios
     column_exclude_list = ('password_hash',)
-    # No incluir el campo del hash en los formularios de creación/edición
-    form_excluded_columns = ('password_hash',)
-    # Añadir un campo 'password' extra al formulario
-    form_extra_fields = {
-            'password': PasswordField('New Password')
-        }
 
     # Hashear la contraseña nueva al guardar
     def on_model_change(self, form, model, is_created):

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Optional, EqualTo
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -44,3 +44,14 @@ class FooterContactForm(FlaskForm):
     province = SelectField('Provincia', choices=provinces)
     comment = TextAreaField('Mensaje o Comentario')
     submit = SubmitField('Enviar')
+
+# Formulario para la vista de admin de User
+class UserAdminForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    # La contraseña es opcional para no forzar su cambio en cada edición.
+    # Si se introduce algo, se valida que coincida con la confirmación.
+    password = PasswordField('New Password', validators=[
+        Optional(),
+        EqualTo('password2', message='Passwords must match')
+    ])
+    password2 = PasswordField('Confirm New Password')
