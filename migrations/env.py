@@ -35,8 +35,8 @@ def get_engine_url():
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+from models import User, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, db
+target_metadata = db.metadata
 # Usa DATABASE_URL del entorno si está disponible, si no, usa la config de la app.
 # Esto soluciona el despliegue en Render.
 database_url = os.getenv('DATABASE_URL')
