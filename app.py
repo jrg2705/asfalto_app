@@ -108,24 +108,22 @@ def assign_role(username, role):
     db.session.commit()
     click.echo(f"Successfully assigned role '{role}' to user '{username}'.")
 
-@app.cli.command("assign-role")
+@app.cli.command("create-admin")
 @click.argument("username")
-@click.argument("role")
+@click.argument("password")
 @with_appcontext
-def assign_role(username, role):
-    """Assigns a role to a user."""
-    if role not in ['admin', 'editor']:
-        click.echo(f"Error: Invalid role '{role}'. Must be 'admin' or 'editor'.")
+def create_admin(username, password):
+    """Creates a new admin user."""
+    from models import User, db
+    if User.query.filter_by(username=username).first():
+        click.echo(f"Error: User '{username}' already exists.")
         return
-
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        click.echo(f"Error: User '{username}' not found.")
-        return
-
-    user.role = role
+    
+    new_admin = User(username=username, role='admin')
+    new_admin.set_password(password)
+    db.session.add(new_admin)
     db.session.commit()
-    click.echo(f"Successfully assigned role '{role}' to user '{username}'.")
+    click.echo(f"Admin user '{username}' created successfully.")
 
 # Clases de Vistas Seguras para Admin
 class SecuredModelView(ModelView):
