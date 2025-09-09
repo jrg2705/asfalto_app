@@ -230,6 +230,10 @@ section h2 {
     margin-bottom: 1.5rem;
 }
 
+.projects-preview .col-md-4 {
+    margin-bottom: 1.5rem;
+}
+
 /* === TESTIMONIOS === */
 .testimonials-preview .card {
     background: transparent;
