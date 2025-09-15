@@ -1,19 +1,24 @@
-/* === VARIABLES DE COLOR (Inspirado en Ergon) === */
+/* === VARIABLES DE COLOR (Constructora Asolca) === */
 :root {
-    --dark-bg: #343a40;
-    --primary-yellow: #fecb00;
+    --primary-blue: #0963AD;
+    --primary-gray: #676D6D;
+    --primary-black: #4C4F4E;
     --text-light: #ffffff;
     --text-dark: #333333;
-    --card-bg: #495057;
     --border-color: #555;
 }
 
 /* === RESETEO Y GLOBALES === */
 body {
-    font-family: 'Roboto', sans-serif; /* Una fuente más moderna */
+    font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
-    background: var(--dark-bg);
+    background: var(--primary-black);
     color: var(--text-light);
+}
+
+h1, h2, h3, h4, h5, h6, .footer-heading, .card-title {
+    font-family: 'Colonna MT', serif;
+    font-weight: bold;
 }
 
 .container {
@@ -34,7 +39,7 @@ body {
 
 .navbar-brand {
     /* Estilo de 'botón' para el logo, funciona en móvil y escritorio */
-    background-color: var(--primary-yellow);
+    background-color: var(--primary-blue);
     padding: 0.2rem 0.4rem;
     border-radius: 0.375rem;
     display: inline-block; /* Asegura que el padding se aplique correctamente */
@@ -57,7 +62,7 @@ body {
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
-    color: var(--primary-yellow);
+    color: var(--primary-blue);
 }
 
 .navbar-dark .navbar-toggler-icon {
@@ -69,7 +74,7 @@ body {
 }
 
 .navbar-toggler:focus {
-    box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.5);
 }
 
 
@@ -147,8 +152,7 @@ body {
 }
 
 .hero-card h1 {
-    font-weight: bold;
-    color: var(--primary-yellow);
+    color: var(--primary-blue);
 }
 
 .hero-video-section .carousel-control-prev,
@@ -156,20 +160,20 @@ body {
     width: 5%;
 }
 
-/* === BOTONES (Estilo Ergon) === */
+/* === BOTONES (Estilo Asolca) === */
 .btn-primary {
-    background-color: var(--primary-yellow);
-    border-color: var(--primary-yellow);
-    color: var(--text-dark);
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--text-light);
     font-weight: bold;
     padding: 0.75rem 1.5rem;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-primary:hover {
-    background-color: #e0b400;
-    border-color: #e0b400;
-    color: var(--text-dark);
+    background-color: #07528a;
+    border-color: #07528a;
+    color: var(--text-light);
 }
 
 .btn-outline-dark {
@@ -193,13 +197,12 @@ section h2 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--primary-yellow);
+    color: var(--primary-blue);
 }
 
 /* === TARJETAS (Servicios, Proyectos) === */
 .card {
-    background: var(--card-bg);
+    background: var(--primary-gray);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -216,8 +219,7 @@ section h2 {
 }
 
 .card-title {
-    color: var(--primary-yellow);
-    font-weight: bold;
+    color: var(--primary-blue);
 }
 
 .card:hover {
@@ -241,20 +243,20 @@ section h2 {
 }
 
 .testimonials-preview .blockquote-footer {
-    color: var(--primary-yellow);
+    color: var(--primary-blue);
 }
 
 /* === CTA (Call to Action) === */
 .cta {
-    background-color: var(--primary-yellow);
+    background-color: var(--primary-blue);
 }
 
 .cta h2 {
-    color: var(--text-dark);
+    color: var(--text-light);
 }
 
 .cta p {
-    color: var(--text-dark);
+    color: var(--text-light);
 }
 
 .cta .btn-light {
@@ -272,10 +274,10 @@ section h2 {
 
 .form-control.bg-dark:focus,
 .form-select.bg-dark:focus {
-    background-color: var(--dark-bg);
+    background-color: var(--primary-black);
     color: var(--text-light);
-    border-color: var(--primary-yellow);
-    box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.25);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.25);
 }
 
 /*
@@ -300,7 +302,7 @@ section h2 {
 
 .footer-logo {
     max-height: 100px; /* Tamaño para el footer */
-    background-color: var(--primary-yellow); /* Fondo amarillo */
+    background-color: var(--primary-blue); /* Fondo azul */
     padding: 0.0rem 0.8rem; /* Espaciado como el del header */
     border-radius: 0.375rem; /* Esquinas redondeadas como el del header */
 }
@@ -311,7 +313,7 @@ section h2 {
 }
 
 .site-footer a {
-    color: var(--primary-yellow);
+    color: var(--primary-blue);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -322,7 +324,6 @@ section h2 {
 
 .footer-heading {
     font-size: 1.2rem;
-    font-weight: bold;
     color: var(--text-light);
     margin-bottom: 1.5rem;
 }
@@ -347,8 +348,8 @@ section h2 {
 .site-footer .form-select:focus {
     background-color: #333;
     color: var(--text-light);
-    border-color: var(--primary-yellow);
-    box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.25);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.25);
 }
 
 .footer-bottom {
@@ -362,8 +363,8 @@ section h2 {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    background-color: var(--primary-yellow);
-    color: var(--text-dark);
+    background-color: var(--primary-blue);
+    color: var(--text-light);
     font-weight: bold;
     font-size: 1rem;
     padding: 12px 20px;
@@ -379,7 +380,7 @@ section h2 {
 #chat-float-button:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    color: var(--text-dark);
+    color: var(--text-light);
 }
 
 #chat-float-button svg {
@@ -397,8 +398,8 @@ section h2 {
 }
 
 .modal-header-yellow {
-    background-color: var(--primary-yellow);
-    color: var(--text-dark); /* Texto oscuro para que contraste con el amarillo */
+    background-color: var(--primary-blue);
+    color: var(--text-light);
     border-bottom: none;
     border-top-left-radius: 14px;
     border-top-right-radius: 14px;
@@ -414,18 +415,18 @@ section h2 {
     border-top: 1px solid var(--border-color);
 }
 
-/* Botón amarillo con letras blancas */
+/* Botón azul con letras blancas */
 .btn-modal-custom {
-    background-color: var(--primary-yellow);
-    border-color: var(--primary-yellow);
-    color: var(--text-dark); /* Texto oscuro para máxima legibilidad en botón amarillo */
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--text-light);
     font-weight: bold;
     padding: 0.5rem 1.5rem;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-modal-custom:hover {
-    background-color: #e0b400;
-    border-color: #e0b400;
-    color: var(--text-dark);
+    background-color: #07528a;
+    border-color: #07528a;
+    color: var(--text-light);
 }
