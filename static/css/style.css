@@ -448,7 +448,8 @@ section h2 {
 .scroll-to-top-btn {
     position: fixed;
     bottom: 90px; /* Ajustado para no chocar con el botón de chat */
-    right: 25px;
+    left: 50%; /* Centrar horizontalmente */
+    transform: translateX(-50%); /* Ajuste para centrado perfecto */
     background-color: var(--primary-blue);
     color: var(--text-light);
     width: 50px;
