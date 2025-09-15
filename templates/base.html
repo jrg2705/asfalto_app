@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <a class="navbar-brand" href="{{ url_for('index') }}">
-                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/logo.png') }}" alt="Logo" class="navbar-logo">
+                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/asolca_logo.png') }}" alt="Logo" class="navbar-logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -54,7 +54,7 @@
             <div class="row">
                 <!-- Columna Izquierda: Logo y Descripción -->
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/logo.png') }}" alt="Logo" class="footer-logo mb-3">
+                    <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/asolca_logo.png') }}" alt="Logo" class="footer-logo mb-3">
                     <p class="footer-description">Somos una empresa líder en soluciones de asfalto, comprometida con la calidad, la innovación y la satisfacción del cliente en cada proyecto que emprendemos.</p>
                     <a href="#">Leer Más &rarr;</a>
                 </div>
