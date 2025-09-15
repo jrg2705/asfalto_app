@@ -14,10 +14,12 @@ body {
     line-height: 1.6;
     background: var(--primary-black);
     color: var(--text-light);
+    /* Añadir padding superior para compensar el logo colgante */
+    padding-top: 95px; 
 }
 
-h1, h2, h3, h4, h5, h6, .footer-heading, .card-title {
-    font-family: 'Colonna MT', serif;
+h1, h2, h3, h4, h5, h6, .footer-heading {
+    font-family: 'Montserrat', sans-serif; /* Usar la fuente principal para consistencia */
     font-weight: bold;
 }
 
@@ -27,23 +29,38 @@ h1, h2, h3, h4, h5, h6, .footer-heading, .card-title {
     margin: auto;
 }
 
-/* === HEADER Y NAVBAR (REFACTORIZADO PARA STICKY) === */
-header.sticky-top .navbar {
+/* === HEADER Y NAVBAR (CON LOGO COLGANTE) === */
+header.sticky-top {
+    /* El header ahora es un contenedor pegajoso */
+    position: fixed; /* Cambiado a fixed para mejor control */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030; /* Z-index alto para estar por encima de todo */
     background-color: var(--primary-black);
+    padding: 10px 0;
     transition: all 0.3s ease;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+}
+
+header.sticky-top .navbar {
+    background-color: transparent; /* El navbar dentro es transparente */
+    min-height: auto;
+    align-items: center; /* Centrar verticalmente los items */
 }
 
 .navbar-brand {
-    background-color: var(--primary-blue);
-    padding: 0.2rem 0.5rem;
+    background-color: #ffffff; /* Fondo blanco para el logo */
+    padding: 0.5rem; /* Aumentar padding para que el logo respire */
     border-radius: 0.375rem;
-    line-height: 1; 
+    line-height: 1;
+    z-index: 10; /* Asegura que esté por encima del contenido */
+    transition: all 0.3s ease;
+    /* Sombra sutil para destacar */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .navbar-logo {
-    height: 50px; /* Un tamaño de logo consistente */
+    height: 70px; /* Logo más grande */
     width: auto;
     vertical-align: middle;
 }
@@ -70,13 +87,6 @@ header.sticky-top .navbar {
 
 .navbar-toggler:focus {
     box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.5);
-}
-
-/* Ajuste para que el menú no se monte sobre el logo en escritorio */
-@media (min-width: 992px) {
-    .navbar-nav {
-        margin-left: auto;
-    }
 }
 
 /* === HERO VIDEO === */
@@ -131,7 +141,7 @@ header.sticky-top .navbar {
 }
 
 .hero-card h1 {
-    color: var(--primary-blue);
+    color: var(--text-light); /* Títulos en blanco */
 }
 
 .hero-video-section .carousel-control-prev,
@@ -176,7 +186,7 @@ section h2 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: var(--primary-blue);
+    color: var(--text-light); /* Títulos en blanco */
 }
 
 /* === TARJETAS (Servicios, Proyectos) === */
@@ -198,7 +208,7 @@ section h2 {
 }
 
 .card-title {
-    color: var(--primary-blue);
+    color: var(--text-light); /* Títulos en blanco */
 }
 
 .card:hover {
@@ -281,9 +291,9 @@ section h2 {
 
 .footer-logo {
     max-height: 100px; /* Tamaño para el footer */
-    background-color: var(--primary-blue); /* Fondo azul */
-    padding: 0.0rem 0.8rem; /* Espaciado como el del header */
-    border-radius: 0.375rem; /* Esquinas redondeadas como el del header */
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 0.5rem; 
+    border-radius: 0.375rem;
 }
 
 .footer-description {
