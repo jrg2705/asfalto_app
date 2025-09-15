@@ -27,32 +27,27 @@ h1, h2, h3, h4, h5, h6, .footer-heading, .card-title {
     margin: auto;
 }
 
-/* === HEADER Y NAVBAR (REFACTORIZADO PARA MÓVIL) === */
-
-/* Estilos base (Móvil primero) */
-.navbar {
-    /* La altura se ajustará al contenido en móvil */
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+/* === HEADER Y NAVBAR (REFACTORIZADO PARA STICKY) === */
+header.sticky-top .navbar {
+    background-color: var(--primary-black);
     transition: all 0.3s ease;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .navbar-brand {
-    /* Estilo de 'botón' para el logo, funciona en móvil y escritorio */
     background-color: var(--primary-blue);
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 0.5rem;
     border-radius: 0.375rem;
-    display: inline-block; /* Asegura que el padding se aplique correctamente */
-    line-height: 1; /* Evita espacio extra vertical */
+    line-height: 1; 
 }
 
 .navbar-logo {
-    height: 45px; /* Tamaño de logo para móvil */
+    height: 50px; /* Un tamaño de logo consistente */
     width: auto;
-    vertical-align: middle; /* Alinea bien la imagen dentro del 'botón' */
+    vertical-align: middle;
 }
 
-/* Estilos para los enlaces y el toggler (sin cambios) */
 .navbar-dark .navbar-nav .nav-link {
     color: var(--text-light);
     font-weight: bold;
@@ -77,26 +72,10 @@ h1, h2, h3, h4, h5, h6, .footer-heading, .card-title {
     box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.5);
 }
 
-
-/* Estilos para Escritorio (pantallas de 992px o más) */
+/* Ajuste para que el menú no se monte sobre el logo en escritorio */
 @media (min-width: 992px) {
-    .navbar {
-        height: 65px; /* Volvemos a la altura fija */
-        position: relative; /* Contexto de posicionamiento solo en escritorio */
-    }
-
-    .navbar-brand {
-        position: absolute; /* Posicionamiento especial solo para escritorio */
-        top: 5px;
-        z-index: 100;
-    }
-
-    .navbar-logo {
-        height: 85px; /* El logo vuelve a ser grande y 'cuelga' */
-    }
-
-    .navbar-collapse {
-        margin-left: 250px; /* El margen para dejar espacio al logo */
+    .navbar-nav {
+        margin-left: auto;
     }
 }
 
