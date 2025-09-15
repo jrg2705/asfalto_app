@@ -46,7 +46,7 @@ header.sticky-top .navbar {
 }
 
 .navbar-logo {
-    height: 65px; /* Logo más pequeño */
+    height: 150px; /* Logo más pequeño */
     width: auto;
     vertical-align: middle;
 }
