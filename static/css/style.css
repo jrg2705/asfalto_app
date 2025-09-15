@@ -31,7 +31,8 @@ h1, h2, h3, h4, h5, h6, .footer-heading {
 /* === HEADER Y NAVBAR (CON LOGO COLGANTE v3) === */
 header.sticky-top .navbar {
     background-color: var(--primary-black);
-    padding: 5px 0;
+    height: 80px; /* Altura fija para la barra */
+    position: relative; /* Contexto para posicionar el logo */
 }
 
 .navbar-brand {
@@ -42,7 +43,11 @@ header.sticky-top .navbar {
     z-index: 10;
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transform: translateY(15px); /* Reducido para un efecto más sutil */
+    
+    /* Posicionamiento absoluto para que no afecte la altura del navbar */
+    position: absolute;
+    top: 0; /* Lo anclamos a la parte superior del navbar relativo */
+    transform: translateY(15px); /* Mantenemos el efecto de 'colgar' */
 }
 
 .navbar-logo {
@@ -411,4 +416,18 @@ section h2 {
     background-color: #07528a;
     border-color: #07528a;
     color: var(--text-light);
+}
+
+/* === FIX: Botones en tarjetas de servicios === */
+.services-preview .card .btn {
+    background-color: var(--primary-yellow);
+    color: var(--primary-black);
+    border-color: var(--primary-yellow);
+    font-weight: bold;
+}
+
+.services-preview .card .btn:hover {
+    background-color: #d3ab00; /* Un amarillo más oscuro para el efecto hover */
+    border-color: #c69f00;
+    color: var(--primary-black);
 }
