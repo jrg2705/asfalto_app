@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Navbar element:", navbar);
     var navbarHeight = navbar.offsetHeight;
     console.log("Navbar height:", navbarHeight);
+    var scrollUpThreshold = 100; // Pixeles para scroll hacia arriba antes de mostrar la navbar
 
     window.addEventListener('scroll', function() {
         var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -26,8 +27,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 navbar.classList.add('navbar-hidden');
                 console.log("Adding navbar-hidden class");
             }
-        } else if (currentScroll < lastScrollTop) {
-            // Scrolling up
+        } else if (currentScroll < lastScrollTop && (currentScroll < (lastScrollTop - scrollUpThreshold) || currentScroll === 0)) {
+            // Scrolling up, and either scrolled up significantly or reached the very top
             if (navbar.classList.contains('navbar-hidden')) {
                 navbar.classList.remove('navbar-hidden');
                 console.log("Removing navbar-hidden class");

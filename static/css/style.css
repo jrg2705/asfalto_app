@@ -39,6 +39,8 @@ header {
 
 header.navbar-hidden {
     transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
 }
 
 header .navbar {
@@ -481,4 +483,11 @@ section h2 {
 .scroll-to-top-btn svg {
     width: 24px;
     height: 24px;
+}
+
+/* Media query para ajustar la posición del botón en pantallas grandes */
+@media (min-width: 992px) {
+    .scroll-to-top-btn {
+        bottom: 40px; /* Más abajo en pantallas grandes */
+    }
 }
