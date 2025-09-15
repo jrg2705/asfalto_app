@@ -1,6 +1,7 @@
 /* === VARIABLES DE COLOR (Constructora Asolca) === */
 :root {
     --primary-blue: #0963AD;
+    --primary-yellow: #fecb00; /* Color amarillo original restaurado */
     --primary-gray: #676D6D;
     --primary-black: #4C4F4E;
     --text-light: #ffffff;
@@ -14,12 +15,10 @@ body {
     line-height: 1.6;
     background: var(--primary-black);
     color: var(--text-light);
-    /* Añadir padding superior para compensar el logo colgante */
-    padding-top: 95px; 
 }
 
 h1, h2, h3, h4, h5, h6, .footer-heading {
-    font-family: 'Montserrat', sans-serif; /* Usar la fuente principal para consistencia */
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
 
@@ -29,40 +28,34 @@ h1, h2, h3, h4, h5, h6, .footer-heading {
     margin: auto;
 }
 
-/* === HEADER Y NAVBAR (CON LOGO COLGANTE) === */
-header.sticky-top {
-    /* El header ahora es un contenedor pegajoso */
-    position: fixed; /* Cambiado a fixed para mejor control */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1030; /* Z-index alto para estar por encima de todo */
-    background-color: var(--primary-black);
-    padding: 10px 0;
-    transition: all 0.3s ease;
-}
-
+/* === HEADER Y NAVBAR (CON LOGO COLGANTE v2) === */
 header.sticky-top .navbar {
-    background-color: transparent; /* El navbar dentro es transparente */
-    min-height: auto;
-    align-items: center; /* Centrar verticalmente los items */
+    background-color: var(--primary-black);
+    padding: 5px 0;
+    /* La altura se define por el contenido y el padding */
 }
 
 .navbar-brand {
-    background-color: #ffffff; /* Fondo blanco para el logo */
-    padding: 0.5rem; /* Aumentar padding para que el logo respire */
+    background-color: #ffffff;
+    padding: 0.4rem;
     border-radius: 0.375rem;
     line-height: 1;
-    z-index: 10; /* Asegura que esté por encima del contenido */
+    z-index: 10;
     transition: all 0.3s ease;
-    /* Sombra sutil para destacar */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Efecto colgante usando transform en lugar de margen */
+    transform: translateY(25px);
 }
 
 .navbar-logo {
-    height: 70px; /* Logo más grande */
+    height: 80px; /* Logo más grande */
     width: auto;
     vertical-align: middle;
+}
+
+/* Espacio para que el contenido principal no inicie debajo del header pegajoso */
+main {
+    padding-top: 95px;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -74,7 +67,7 @@ header.sticky-top .navbar {
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
-    color: var(--primary-blue);
+    color: var(--primary-yellow);
 }
 
 .navbar-dark .navbar-toggler-icon {
@@ -86,8 +79,9 @@ header.sticky-top .navbar {
 }
 
 .navbar-toggler:focus {
-    box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.5);
 }
+
 
 /* === HERO VIDEO === */
 .hero-video-section {
@@ -98,6 +92,7 @@ header.sticky-top .navbar {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    margin-top: -95px; /* Negativo para que suba y quede detrás del header */
 }
 
 #bgvideo {
@@ -130,18 +125,18 @@ header.sticky-top .navbar {
 }
 
 .hero-card {
-    background: rgba(42, 42, 42, 0.35); /* Fondo semi-transparente */
+    background: rgba(42, 42, 42, 0.35);
     border: 1px solid var(--border-color);
     padding: 2.5rem;
     border-radius: 15px;
     text-align: center;
     max-width: 700px;
     margin: auto;
-    backdrop-filter: blur(5px); /* Efecto "vidrio esmerilado" */
+    backdrop-filter: blur(5px);
 }
 
 .hero-card h1 {
-    color: var(--text-light); /* Títulos en blanco */
+    color: var(--primary-yellow); /* Títulos en amarillo */
 }
 
 .hero-video-section .carousel-control-prev,
@@ -186,7 +181,7 @@ section h2 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: var(--text-light); /* Títulos en blanco */
+    color: var(--primary-yellow); /* Títulos en amarillo */
 }
 
 /* === TARJETAS (Servicios, Proyectos) === */
@@ -208,7 +203,7 @@ section h2 {
 }
 
 .card-title {
-    color: var(--text-light); /* Títulos en blanco */
+    color: var(--primary-yellow); /* Títulos en amarillo */
 }
 
 .card:hover {
@@ -284,14 +279,14 @@ section h2 {
 
 /* === FOOTER === */
 .site-footer {
-    background-color: #1a1a1a; /* Un poco más oscuro que el body para diferenciar */
+    background-color: #1a1a1a;
     color: #ccc;
     padding: 4rem 0 2rem 0;
 }
 
 .footer-logo {
-    max-height: 100px; /* Tamaño para el footer */
-    background-color: #ffffff; /* Fondo blanco */
+    max-height: 100px;
+    background-color: #ffffff;
     padding: 0.5rem; 
     border-radius: 0.375rem;
 }
@@ -362,7 +357,7 @@ section h2 {
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    z-index: 1050; /* Alto z-index para estar por encima de todo */
+    z-index: 1050;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -378,12 +373,12 @@ section h2 {
 
 /* === MODAL DE BIENVENIDA === */
 .modal-papyrus {
-    background-color: rgba(40, 40, 40, 0.65); /* Fondo oscuro semi-transparente */
-    backdrop-filter: blur(8px); /* Efecto vidrio esmerilado */
-    -webkit-backdrop-filter: blur(8px); /* Soporte para Safari */
+    background-color: rgba(40, 40, 40, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border-color);
-    border-radius: 15px; /* Bordes redondeados */
-    color: var(--text-light); /* Texto blanco para el cuerpo */
+    border-radius: 15px;
+    color: var(--text-light);
 }
 
 .modal-header-yellow {
@@ -397,7 +392,7 @@ section h2 {
 .modal-papyrus .modal-body {
     font-size: 1.1rem;
     padding: 1.5rem;
-    white-space: pre-wrap; /* Respeta los saltos de línea */
+    white-space: pre-wrap;
 }
 
 .modal-papyrus .modal-footer {
