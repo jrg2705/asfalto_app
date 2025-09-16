@@ -65,7 +65,7 @@ header .navbar {
 }
 
 .navbar-logo {
-    height: 120px; /* Logo más pequeño */
+    height: 150px; /* Logo más grande */
     width: auto;
     vertical-align: middle;
 }
