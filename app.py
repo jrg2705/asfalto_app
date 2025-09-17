@@ -4,14 +4,13 @@ from flask_migrate import Migrate
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.menu import MenuLink
-from flask_admin.form.upload import FileUploadField
+from wtforms.fields import FileField, PasswordField
 from flask_login import LoginManager, current_user, login_user, logout_user
 import cloudinary
 import cloudinary.uploader
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
 from forms import ContactForm, FooterContactForm, LoginForm, UserAdminForm
-from wtforms.fields import PasswordField
 from flask.cli import with_appcontext
 import click
 from datetime import datetime
@@ -152,56 +151,53 @@ class MyAdminIndexView(AdminIndexView):
 
 # Vista personalizada para el modelo User
 class UserAdminView(SecuredModelView):
-    # Usar el formulario personalizado
     form = UserAdminForm
-
-    # Columnas a mostrar en la lista
     column_list = ('username', 'role')
-    # No mostrar el hash en la lista de usuarios
     column_exclude_list = ('password_hash',)
 
-    # Lógica de acceso
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role == 'admin'
 
     def inaccessible_callback(self, name, **kwargs):
-        # Redirigir si el usuario no es admin
         flash('No tienes permiso para acceder a esta página.', 'danger')
         return redirect(url_for('admin.index'))
 
-    # Hashear la contraseña nueva al guardar
     def on_model_change(self, form, model, is_created):
         if form.password.data:
             model.set_password(form.password.data)
 
-# Vista personalizada para SuccessStory con subida de imágenes
-class SuccessStoryAdminView(SecuredModelView):
-    # Ocultar el campo de URL de la imagen para reemplazarlo con el campo de subida
+# Vista base para subida de imágenes a Cloudinary
+class CloudinaryBaseView(SecuredModelView):
     form_excluded_columns = ['image_url']
-
-    # Añadir un campo de subida de archivos al formulario
     form_extra_fields = {
-        'image': FileUploadField('Image', name='image', allowed_extensions=['jpg', 'png', 'jpeg', 'gif'])
+        'image': FileField('Imagen', allowed_extensions=['jpg', 'png', 'jpeg', 'gif'])
     }
-
-    def on_model_change(self, form, model, is_created):
+    
+    def _handle_upload(self, form, model, folder_name):
         file_data = request.files.get(form.image.name)
-
         if file_data:
             try:
-                # Subir a Cloudinary
-                upload_result = cloudinary.uploader.upload(file_data, folder="success_stories")
-                # Guardar la URL segura en el modelo
+                upload_result = cloudinary.uploader.upload(file_data, folder=folder_name)
                 model.image_url = upload_result['secure_url']
             except Exception as e:
                 flash(f"Error al subir la imagen a Cloudinary: {e}", "danger")
+
+# Vista para SuccessStory
+class SuccessStoryAdminView(CloudinaryBaseView):
+    def on_model_change(self, form, model, is_created):
+        self._handle_upload(form, model, "success_stories")
+
+# Vista para Project
+class ProjectAdminView(CloudinaryBaseView):
+    def on_model_change(self, form, model, is_created):
+        self._handle_upload(form, model, "projects")
 
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
-admin.add_view(SecuredModelView(Project, db.session))
+admin.add_view(ProjectAdminView(Project, db.session, name="Proyectos"))
 admin.add_view(SuccessStoryAdminView(SuccessStory, db.session, name="Historias de Éxito"))
 admin.add_view(SecuredModelView(ContactMessage, db.session))
 admin.add_view(SecuredModelView(PopupMessage, db.session))
