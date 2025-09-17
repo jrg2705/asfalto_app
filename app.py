@@ -4,7 +4,10 @@ from flask_migrate import Migrate
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.menu import MenuLink
+from flask_admin.form.upload import FileUploadField
 from flask_login import LoginManager, current_user, login_user, logout_user
+import cloudinary
+import cloudinary.uploader
 from config import Config
 from models import db, SiteSetting, Service, Project, SuccessStory, ContactMessage, PopupMessage, User
 from forms import ContactForm, FooterContactForm, LoginForm, UserAdminForm
@@ -25,6 +28,13 @@ def inject_footer_form():
     form = FooterContactForm()
     return {'footer_form': form}
 app.config.from_object(Config)
+
+# Configuración de Cloudinary
+cloudinary.config(
+    cloud_name = app.config['CLOUDINARY_CLOUD_NAME'],
+    api_key = app.config['CLOUDINARY_API_KEY'],
+    api_secret = app.config['CLOUDINARY_API_SECRET']
+)
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -164,13 +174,35 @@ class UserAdminView(SecuredModelView):
         if form.password.data:
             model.set_password(form.password.data)
 
+# Vista personalizada para SuccessStory con subida de imágenes
+class SuccessStoryAdminView(SecuredModelView):
+    # Ocultar el campo de URL de la imagen para reemplazarlo con el campo de subida
+    form_excluded_columns = ['image_url']
+
+    # Añadir un campo de subida de archivos al formulario
+    form_extra_fields = {
+        'image': FileUploadField('Image', name='image', allowed_extensions=['jpg', 'png', 'jpeg', 'gif'])
+    }
+
+    def on_model_change(self, form, model, is_created):
+        file_data = request.files.get(form.image.name)
+
+        if file_data:
+            try:
+                # Subir a Cloudinary
+                upload_result = cloudinary.uploader.upload(file_data, folder="success_stories")
+                # Guardar la URL segura en el modelo
+                model.image_url = upload_result['secure_url']
+            except Exception as e:
+                flash(f"Error al subir la imagen a Cloudinary: {e}", "danger")
+
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(SecuredModelView(Service, db.session))
 admin.add_view(SecuredModelView(Project, db.session))
-admin.add_view(SecuredModelView(SuccessStory, db.session))
+admin.add_view(SuccessStoryAdminView(SuccessStory, db.session, name="Historias de Éxito"))
 admin.add_view(SecuredModelView(ContactMessage, db.session))
 admin.add_view(SecuredModelView(PopupMessage, db.session))
 admin.add_link(MenuLink(name='Logout', url='/logout'))

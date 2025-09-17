@@ -8,3 +8,4 @@ python-dotenv
 Flask-Login
 gunicorn
 psycopg2-binary
+cloudinary
