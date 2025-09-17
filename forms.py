@@ -30,10 +30,37 @@ class FooterContactForm(FlaskForm):
     # Lista de provincias de ejemplo
     provinces = [
         ('', 'Provincia...'),
-        ('P1', 'Provincia 1'),
-        ('P2', 'Provincia 2'),
-        ('P3', 'Provincia 3'),
-        ('P4', 'Provincia 4')
+        ('Azua', 'Azua'),
+        ('Bahoruco', 'Bahoruco'),
+        ('Barahona', 'Barahona'),
+        ('Dajabón', 'Dajabón'),
+        ('Duarte', 'Duarte'),
+        ('Elías Piña', 'Elías Piña'),
+        ('El Seibo', 'El Seibo'),
+        ('Espaillat', 'Espaillat'),
+        ('Hato Mayor', 'Hato Mayor'),
+        ('Hermanas Mirabal', 'Hermanas Mirabal'),
+        ('Independencia', 'Independencia'),
+        ('La Altagracia', 'La Altagracia'),
+        ('La Romana', 'La Romana'),
+        ('La Vega', 'La Vega'),
+        ('María Trinidad Sánchez', 'María Trinidad Sánchez'),
+        ('Monseñor Nouel', 'Monseñor Nouel'),
+        ('Monte Cristi', 'Monte Cristi'),
+        ('Monte Plata', 'Monte Plata'),
+        ('Pedernales', 'Pedernales'),
+        ('Peravia', 'Peravia'),
+        ('Puerto Plata', 'Puerto Plata'),
+        ('Samaná', 'Samaná'),
+        ('Sánchez Ramírez', 'Sánchez Ramírez'),
+        ('San Cristóbal', 'San Cristóbal'),
+        ('San José de Ocoa', 'San José de Ocoa'),
+        ('San Juan', 'San Juan'),
+        ('San Pedro de Macorís', 'San Pedro de Macorís'),
+        ('Santiago', 'Santiago'),
+        ('Santiago Rodríguez', 'Santiago Rodríguez'),
+        ('Santo Domingo', 'Santo Domingo'),
+        ('Valverde', 'Valverde')
     ]
 
     first_name = StringField('Nombre', validators=[DataRequired()])
