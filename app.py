@@ -167,7 +167,7 @@ class UserAdminView(SecuredModelView):
             model.set_password(form.password.data)
 
 # Vista base para subida de imágenes a Cloudinary
-class CloudinaryBaseView(SecuredModelView):
+class CloudinaryImageBaseView(SecuredModelView):
     form_excluded_columns = ['image_url']
     form_extra_fields = {
         'image': FileField('Imagen')
@@ -183,20 +183,36 @@ class CloudinaryBaseView(SecuredModelView):
                 flash(f"Error al subir la imagen a Cloudinary: {e}", "danger")
 
 # Vista para SuccessStory
-class SuccessStoryAdminView(CloudinaryBaseView):
+class SuccessStoryAdminView(CloudinaryImageBaseView):
     def on_model_change(self, form, model, is_created):
         self._handle_upload(form, model, "success_stories")
 
 # Vista para Project
-class ProjectAdminView(CloudinaryBaseView):
+class ProjectAdminView(CloudinaryImageBaseView):
     def on_model_change(self, form, model, is_created):
         self._handle_upload(form, model, "projects")
+
+# Vista para Service (iconos)
+class ServiceAdminView(SecuredModelView):
+    form_excluded_columns = ['icon_url']
+    form_extra_fields = {
+        'icon': FileField('Icono (ej: .svg, .png)')
+    }
+
+    def on_model_change(self, form, model, is_created):
+        file_data = request.files.get(form.icon.name)
+        if file_data:
+            try:
+                upload_result = cloudinary.uploader.upload(file_data, folder="service_icons")
+                model.icon_url = upload_result['secure_url']
+            except Exception as e:
+                flash(f"Error al subir el icono a Cloudinary: {e}", "danger")
 
 # Panel Admin
 admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(SecuredModelView(SiteSetting, db.session))
-admin.add_view(SecuredModelView(Service, db.session))
+admin.add_view(ServiceAdminView(Service, db.session, name="Servicios"))
 admin.add_view(ProjectAdminView(Project, db.session, name="Proyectos"))
 admin.add_view(SuccessStoryAdminView(SuccessStory, db.session, name="Historias de Éxito"))
 admin.add_view(SecuredModelView(ContactMessage, db.session))
