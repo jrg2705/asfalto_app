@@ -78,28 +78,49 @@
 </section>
 
 <!-- Recent Projects -->
-<section class="projects-preview bg-light py-5">
+<section class="projects-preview py-5">
     <div class="container">
         <div class="text-center mb-5">
             <h2>Proyectos Recientes</h2>
             <p>Echa un vistazo a algunos de nuestros trabajos más recientes.</p>
         </div>
-        <div class="row">
-            {% for project in projects|batch(3)|first %}
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{{ project.image_url if project.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="card-img-top" alt="{{ project.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ project.title }}</h5>
-                        <p class="card-text">{{ project.description|truncate(80) }}</p>
-                        <a href="{{ url_for('project_detail', id=project.id) }}" class="btn btn-primary">Ver Proyecto</a>
+
+        {% if projects %}
+        <div id="projectCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                {% for project in projects %}
+                <button type="button" data-bs-target="#projectCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
+                {% endfor %}
+            </div>
+
+            <!-- Slides -->
+            <div class="carousel-inner">
+                {% for project in projects %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <img src="{{ project.image_url if project.image_url else url_for('static', filename='images/project_placeholder.png') }}" class="d-block w-100" alt="{{ project.title }}">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5><a href="{{ url_for('project_detail', id=project.id) }}" class="text-white text-decoration-none">{{ project.title }}</a></h5>
+                        <p>{{ project.description|truncate(100) }}</p>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% else %}
-            <p class="text-center">No hay proyectos para mostrar.</p>
-            {% endfor %}
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+        {% else %}
+        <p class="text-center">No hay proyectos para mostrar.</p>
+        {% endif %}
+
         <div class="text-center mt-4">
             <a href="{{ url_for('projects') }}" class="btn btn-outline-dark">Ver todos los proyectos</a>
         </div>
