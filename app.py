@@ -170,7 +170,7 @@ class UserAdminView(SecuredModelView):
 class CloudinaryBaseView(SecuredModelView):
     form_excluded_columns = ['image_url']
     form_extra_fields = {
-        'image': FileField('Imagen', allowed_extensions=['jpg', 'png', 'jpeg', 'gif'])
+        'image': FileField('Imagen')
     }
     
     def _handle_upload(self, form, model, folder_name):
