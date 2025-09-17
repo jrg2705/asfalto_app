@@ -491,3 +491,31 @@ section h2 {
         bottom: 40px; /* Más abajo en pantallas grandes */
     }
 }
+
+/* === AJUSTES RESPONSIVE PARA NAVBAR (Pantallas Pequeñas) === */
+@media (max-width: 991.98px) {
+    header .navbar {
+        height: auto; /* Altura automática para acomodar el logo y el toggler */
+    }
+
+    .navbar-brand {
+        position: static; /* Devolver el logo al flujo normal del documento */
+        transform: none; /* Quitar el efecto colgante */
+        padding: 0.5rem 0; /* Ajustar padding */
+    }
+
+    .navbar-logo {
+        height: 50px; /* Reducir el tamaño del logo */
+    }
+
+    main {
+        padding-top: 70px; /* Ajustar el padding del contenido principal */
+    }
+
+    .navbar-collapse {
+        background-color: var(--primary-black); /* Fondo para el menú desplegado */
+        padding: 1rem;
+        border-radius: 0.375rem;
+        margin-top: 10px;
+    }
+}
