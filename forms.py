@@ -34,6 +34,7 @@ class FooterContactForm(FlaskForm):
         ('Bahoruco', 'Bahoruco'),
         ('Barahona', 'Barahona'),
         ('Dajabón', 'Dajabón'),
+        ('Distrito Nacional', 'Distrito Nacional'),
         ('Duarte', 'Duarte'),
         ('Elías Piña', 'Elías Piña'),
         ('El Seibo', 'El Seibo'),
