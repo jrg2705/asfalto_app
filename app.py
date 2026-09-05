@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.menu import MenuLink
+from flask_admin.theme import Bootstrap4Theme
 from wtforms.fields import FileField, PasswordField
 from flask_login import LoginManager, current_user, login_user, logout_user
 import cloudinary
@@ -28,12 +29,13 @@ def inject_footer_form():
     return {'footer_form': form}
 app.config.from_object(Config)
 
-# Configuración de Cloudinary
-cloudinary.config(
-    cloud_name = app.config['CLOUDINARY_CLOUD_NAME'],
-    api_key = app.config['CLOUDINARY_API_KEY'],
-    api_secret = app.config['CLOUDINARY_API_SECRET']
-)
+# Configuración de Cloudinary (solo si hay credenciales)
+if app.config.get('CLOUDINARY_CLOUD_NAME') and app.config.get('CLOUDINARY_API_KEY'):
+    cloudinary.config(
+        cloud_name = app.config['CLOUDINARY_CLOUD_NAME'],
+        api_key = app.config['CLOUDINARY_API_KEY'],
+        api_secret = app.config['CLOUDINARY_API_SECRET']
+    )
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -208,8 +210,13 @@ class ServiceAdminView(SecuredModelView):
             except Exception as e:
                 flash(f"Error al subir el icono a Cloudinary: {e}", "danger")
 
-# Panel Admin
-admin = Admin(app, name="Panel Admin", template_mode="bootstrap4", index_view=MyAdminIndexView())
+# Panel Admin (compatible con Flask-Admin 2.x)
+admin = Admin(
+    app,
+    name="Panel Admin",
+    theme=Bootstrap4Theme(),
+    index_view=MyAdminIndexView()
+)
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(SecuredModelView(SiteSetting, db.session))
 admin.add_view(ServiceAdminView(Service, db.session, name="Servicios"))
