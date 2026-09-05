@@ -4,7 +4,6 @@
 <!-- Hero Video Section -->
 <section class="hero-video-section">
     <video playsinline autoplay muted loop poster="{{ url_for('static', filename='images/hero.png') }}" id="bgvideo">
-        <!-- **IMPORTANTE**: REEMPLAZA ESTE VIDEO CON EL TUYO -->
         <source src="{{ url_for('static', filename='videos/placeholder.mp4') }}" type="video/mp4">
     </video>
 
@@ -87,14 +86,12 @@
 
         {% if projects %}
         <div id="projectCarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- Indicators -->
             <div class="carousel-indicators">
                 {% for project in projects %}
                 <button type="button" data-bs-target="#projectCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="true" aria-label="Slide {{ loop.index }}"></button>
                 {% endfor %}
             </div>
 
-            <!-- Slides -->
             <div class="carousel-inner">
                 {% for project in projects %}
                 <div class="carousel-item {% if loop.first %}active{% endif %}">
@@ -107,7 +104,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -163,7 +159,7 @@
     </div>
 </section>
 
-<!-- Welcome Modal -->
+<!-- Welcome Modal (contenido escapado para evitar XSS) -->
 {% if popup %}
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -172,9 +168,7 @@
         <h5 class="modal-title" id="welcomeModalLabel">{{ popup.title }}</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        {{ popup.content | safe }}
-      </div>
+      <div class="modal-body" style="white-space: pre-wrap;">{{ popup.content }}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-modal-custom" data-bs-dismiss="modal">{{ popup.button_text }}</button>
       </div>
@@ -184,12 +178,10 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Muestra el modal solo si no se ha mostrado antes en esta sesión
     if (!sessionStorage.getItem('welcomeModalShown')) {
       var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
       welcomeModal.show();
 
-      // Cuando el modal se cierra, guarda un indicador en la sesión
       document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function () {
         sessionStorage.setItem('welcomeModalShown', 'true');
       });

@@ -56,7 +56,6 @@
                 <div class="col-lg-4 mb-4 mb-lg-0">
                     <img src="{{ settings.logo_url if settings and settings.logo_url else url_for('static', filename='images/asolca_logo.png') }}" alt="Logo" class="footer-logo mb-3">
                     <p class="footer-description">Somos una empresa líder en soluciones de asfalto, comprometida con la calidad, la innovación y la satisfacción del cliente en cada proyecto que emprendemos.</p>
-                    <a href="#">Leer Más &rarr;</a>
                 </div>
 
                 <!-- Columna Central: Enlaces -->
@@ -65,19 +64,19 @@
                         <div class="col-md-6">
                             <h5 class="footer-heading">Nuestros Productos</h5>
                             <ul class="list-unstyled footer-links">
-                                <li><a href="#">Asfalto en Caliente</a></li>
-                                <li><a href="#">Selladores</a></li>
-                                <li><a href="#">Emulsiones</a></li>
-                                <li><a href="#">Aditivos</a></li>
+                                <li><a href="{{ url_for('services') }}">Asfalto en Caliente</a></li>
+                                <li><a href="{{ url_for('services') }}">Selladores</a></li>
+                                <li><a href="{{ url_for('services') }}">Emulsiones</a></li>
+                                <li><a href="{{ url_for('services') }}">Aditivos</a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <h5 class="footer-heading">A Quién Servimos</h5>
                             <ul class="list-unstyled footer-links">
-                                <li><a href="#">Gobierno</a></li>
-                                <li><a href="#">Constructores</a></li>
-                                <li><a href="#">Industria</a></li>
-                                <li><a href="#">Particulares</a></li>
+                                <li><a href="{{ url_for('contact') }}">Gobierno</a></li>
+                                <li><a href="{{ url_for('contact') }}">Constructores</a></li>
+                                <li><a href="{{ url_for('contact') }}">Industria</a></li>
+                                <li><a href="{{ url_for('contact') }}">Particulares</a></li>
                             </ul>
                         </div>
                     </div>
@@ -86,7 +85,6 @@
                 <!-- Columna Derecha: Formulario -->
                 <div class="col-lg-4">
                     <h5 class="footer-heading">Contacto Rápido</h5>
-                    <!-- Flashed Messages for Footer Form -->
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for category, message in messages %}
@@ -99,6 +97,10 @@
                     {% endwith %}
                     <form action="{{ url_for('footer_contact') }}" method="POST" novalidate>
                         {{ footer_form.hidden_tag() }}
+                        <!-- Honeypot anti-spam -->
+                        <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+                            {{ footer_form.website(tabindex="-1", autocomplete="off") }}
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 {{ footer_form.first_name(class="form-control form-control-sm", placeholder="Nombre") }}
@@ -157,16 +159,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             var scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
-            // Show/hide button on scroll
             window.onscroll = function() {
                 if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                    scrollToTopBtn.classList.add('show'); // Add show class
+                    scrollToTopBtn.classList.add('show');
                 } else {
-                    scrollToTopBtn.classList.remove('show'); // Remove show class
+                    scrollToTopBtn.classList.remove('show');
                 }
             };
 
-            // Scroll to top on click
             scrollToTopBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 window.scrollTo({

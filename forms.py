@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Optional, EqualTo
+from wtforms import StringField, TextAreaField, SelectField, PasswordField, SubmitField, HiddenField
+from wtforms.validators import DataRequired, Email, Optional, EqualTo, ValidationError
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -23,11 +23,16 @@ class ContactForm(FlaskForm):
     company = StringField('Compañía')
     inquiry_type = SelectField('Tipo de consulta*', choices=inquiry_choices, validators=[DataRequired()])
     message = TextAreaField('Mensaje*', validators=[DataRequired()])
+    # Honeypot anti-spam: los bots suelen rellenarlo, los humanos no lo ven
+    website = HiddenField('Website')
     submit = SubmitField('Enviar Mensaje')
+
+    def validate_website(self, field):
+        if field.data:
+            raise ValidationError('Spam detectado.')
 
 
 class FooterContactForm(FlaskForm):
-    # Lista de provincias de ejemplo
     provinces = [
         ('', 'Provincia...'),
         ('Azua', 'Azua'),
@@ -71,14 +76,18 @@ class FooterContactForm(FlaskForm):
     city = StringField('Ciudad')
     province = SelectField('Provincia', choices=provinces)
     comment = TextAreaField('Mensaje o Comentario')
+    # Honeypot anti-spam
+    website = HiddenField('Website')
     submit = SubmitField('Enviar')
 
-# Formulario para la vista de admin de User
+    def validate_website(self, field):
+        if field.data:
+            raise ValidationError('Spam detectado.')
+
+
 class UserAdminForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     role = SelectField('Role', choices=[('editor', 'Editor'), ('admin', 'Admin')], validators=[DataRequired()])
-    # La contraseña es opcional para no forzar su cambio en cada edición.
-    # Si se introduce algo, se valida que coincida con la confirmación.
     password = PasswordField('New Password', validators=[
         Optional(),
         EqualTo('password2', message='Passwords must match')
