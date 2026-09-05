@@ -1,0 +1,52 @@
+# Blueprint para Render.com
+# ============================================
+# Este archivo define solo el Web Service.
+# NO crea base de datos en Render (la gratuita expira a los 30 días).
+#
+# Recomendación: usa Neon (https://neon.tech) u otro Postgres externo
+# y pega la connection string en la variable DATABASE_URL.
+#
+# Cómo usarlo:
+# 1. Sube este archivo al repositorio
+# 2. En Render → Blueprints → New Blueprint Instance
+# 3. Selecciona el repo
+# 4. Completa las variables secretas cuando te las pida
+# 5. Después del deploy ejecuta en la Shell:
+#      flask db upgrade
+#      flask seed-admin
+# ============================================
+
+services:
+  - type: web
+    name: asfalto-app
+    runtime: python
+    plan: free
+    region: oregon          # Cambia a frankfurt u oregon según prefieras
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+      - key: SECRET_KEY
+        generateValue: true   # Render genera una clave segura automáticamente
+      - key: DATABASE_URL
+        sync: false           # Pégala tú (Neon u otro Postgres)
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+# Si en el futuro quieres usar la Postgres de Render (solo para pruebas cortas),
+# descomenta el bloque siguiente y cambia DATABASE_URL a:
+#   - key: DATABASE_URL
+#     fromDatabase:
+#       name: asfalto-db
+#       property: connectionString
+#
+# databases:
+#   - name: asfalto-db
+#     plan: free
+#     databaseName: asfalto
+#     user: asfalto
