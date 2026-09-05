@@ -16,6 +16,7 @@ from flask.cli import with_appcontext
 import click
 from datetime import datetime
 from sqlalchemy import text
+import os
 
 app = Flask(__name__)
 
@@ -46,6 +47,51 @@ login.login_view = 'login'
 def load_user(id):
     return User.query.get(int(id))
 
+
+def init_database():
+    """Ejecuta migraciones y crea el usuario admin si no existe.
+    Pensado para el plan Free de Render (sin Shell).
+    """
+    with app.app_context():
+        try:
+            # Aplicar migraciones
+            from flask_migrate import upgrade
+            upgrade()
+            print("✅ Migraciones aplicadas correctamente.")
+        except Exception as e:
+            print(f"⚠️  No se pudieron aplicar migraciones (puede ser normal la primera vez): {e}")
+            # Fallback: crear tablas si no existen
+            try:
+                db.create_all()
+                print("✅ Tablas creadas con db.create_all().")
+            except Exception as e2:
+                print(f"❌ Error creando tablas: {e2}")
+
+        # Crear usuario admin si no existe
+        try:
+            default_username = "admin"
+            default_password = "adminpassword"
+
+            user = User.query.filter_by(username=default_username).first()
+            if not user:
+                new_admin = User(username=default_username, role='admin')
+                new_admin.set_password(default_password)
+                db.session.add(new_admin)
+                db.session.commit()
+                print(f"✅ Usuario admin creado. Usuario: {default_username} / Contraseña: {default_password}")
+                print("!!! CAMBIA LA CONTRASEÑA INMEDIATAMENTE DESPUÉS DE ENTRAR !!!")
+            else:
+                print("ℹ️  Usuario admin ya existe.")
+        except Exception as e:
+            print(f"⚠️  Error al crear usuario admin: {e}")
+
+
+# Ejecutar inicialización al arrancar (solo una vez por proceso)
+# Se puede desactivar poniendo SKIP_DB_INIT=1 en las variables de entorno
+if os.environ.get("SKIP_DB_INIT") != "1":
+    init_database()
+
+
 # Para inicializar base desde CLI
 @app.cli.command("create-db")
 @with_appcontext
@@ -57,9 +103,9 @@ def create_db():
 @with_appcontext
 def seed_admin():
     """Creates a default admin user if none exists. USE ONLY FOR INITIAL DEPLOYMENT!"""
-    from models import User, db # Import here to avoid circular dependency issues
+    from models import User, db
     default_username = "admin"
-    default_password = "adminpassword" # !!! CHANGE THIS IMMEDIATELY AFTER LOGIN !!!
+    default_password = "adminpassword"
 
     user = User.query.filter_by(username=default_username).first()
     if user:
@@ -78,13 +124,12 @@ def seed_admin():
 def fix_db_version():
     """Manually sets the alembic_version in the database."""
     try:
-        # Get the latest revision from the local migrations folder
         from alembic.script import ScriptDirectory
         from alembic.config import Config
-        import os
+        import os as _os
 
         alembic_cfg = Config()
-        alembic_cfg.set_main_option("script_location", os.path.join(os.path.dirname(__file__), "migrations"))
+        alembic_cfg.set_main_option("script_location", _os.path.join(_os.path.dirname(__file__), "migrations"))
         script = ScriptDirectory.from_config(alembic_cfg)
         head_revision = script.get_current_head()
 
@@ -92,7 +137,6 @@ def fix_db_version():
             click.echo("Error: Could not determine head revision from local migrations.")
             return
 
-        # Execute raw SQL to update the alembic_version table
         db.session.execute(text(f"UPDATE alembic_version SET version_num = '{head_revision}'"))
         db.session.commit()
         click.echo(f"Successfully stamped alembic_version to {head_revision}.")
