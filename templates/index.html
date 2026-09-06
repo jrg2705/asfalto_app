@@ -7,14 +7,13 @@
         <source src="{{ url_for('static', filename='videos/placeholder.mp4') }}" type="video/mp4">
     </video>
 
-    <div class="container h-100 d-flex align-items-center justify-content-center">
+    <div class="container hero-carousel-wrap">
         <div id="heroCardCarousel"
-             class="carousel slide w-100"
+             class="carousel slide"
              data-bs-ride="carousel"
              data-bs-interval="6000"
              data-bs-pause="hover">
             <div class="carousel-inner">
-                <!-- Card Slide 1 -->
                 <div class="carousel-item active">
                     <div class="hero-card">
                         <h1 class="display-4">Soluciones en Construcción</h1>
@@ -22,7 +21,6 @@
                         <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg">Nuestros Servicios</a>
                     </div>
                 </div>
-                <!-- Card Slide 2 -->
                 <div class="carousel-item">
                     <div class="hero-card">
                         <h1 class="display-4">Proyectos de Calidad</h1>
@@ -30,7 +28,6 @@
                         <a href="{{ url_for('projects') }}" class="btn btn-primary btn-lg">Ver Proyectos</a>
                     </div>
                 </div>
-                <!-- Card Slide 3 -->
                 <div class="carousel-item">
                     <div class="hero-card">
                         <h1 class="display-4">Contacta con Expertos</h1>
@@ -163,7 +160,6 @@
     </div>
 </section>
 
-<!-- Welcome Modal -->
 {% if popup %}
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -185,7 +181,6 @@
     if (!sessionStorage.getItem('welcomeModalShown')) {
       var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
       welcomeModal.show();
-
       document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function () {
         sessionStorage.setItem('welcomeModalShown', 'true');
       });

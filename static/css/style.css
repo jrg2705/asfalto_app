@@ -187,24 +187,24 @@ main {
     z-index: -99;
 }
 
-.hero-video-section .container {
+/* Contenedor del carrusel: centrado, un poco más abajo en móvil */
+.hero-carousel-wrap {
     position: relative;
     z-index: 2;
-    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1.5rem;
 }
 
 #heroCardCarousel {
     width: 100%;
 }
 
-#heroCardCarousel .carousel-inner {
-    display: flex;
-    align-items: center;
-}
-
+/* Importante: no forzar flex en .carousel-inner (rompe la transición) */
 #heroCardCarousel .carousel-item {
-    float: none;
-    margin: 0 auto;
+    text-align: center;
 }
 
 .hero-card {
@@ -224,8 +224,8 @@ main {
 
 .hero-video-section .carousel-control-prev,
 .hero-video-section .carousel-control-next {
-    width: 8%;
-    opacity: 0.7;
+    width: 10%;
+    opacity: 0.65;
 }
 
 .hero-video-section .carousel-control-prev:hover,
@@ -607,8 +607,14 @@ section h2 {
         max-height: 460px;
     }
 
+    .hero-carousel-wrap {
+        padding-top: 2.25rem; /* baja un poco la tarjeta */
+        align-items: flex-end;
+        padding-bottom: 1.25rem;
+    }
+
     .hero-card {
-        padding: 1.6rem 1.25rem;
+        padding: 1.5rem 1.2rem;
         max-width: 92%;
     }
 
@@ -660,8 +666,14 @@ section h2 {
         max-height: 400px;
     }
 
+    .hero-carousel-wrap {
+        padding-top: 2.5rem;
+        padding-bottom: 1rem;
+        align-items: flex-end;
+    }
+
     .hero-card {
-        padding: 1.25rem 1rem;
+        padding: 1.2rem 1rem;
         max-width: 94%;
     }
 
