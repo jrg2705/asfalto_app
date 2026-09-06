@@ -156,8 +156,9 @@ main {
 /* === HERO VIDEO === */
 .hero-video-section {
     position: relative;
-    height: 90vh;
-    min-height: 500px;
+    height: 85vh;
+    min-height: 480px;
+    max-height: 820px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -176,6 +177,7 @@ main {
     z-index: -100;
     transform: translateX(-50%) translateY(-50%);
     background-size: cover;
+    object-fit: cover;
 }
 
 .hero-video-section::before {
@@ -359,7 +361,6 @@ section h2 {
     margin-top: 0.75rem;
 }
 
-/* Enlaces del footer: mejor contraste sobre fondo oscuro */
 .site-footer a {
     color: var(--footer-link);
     text-decoration: none;
@@ -437,7 +438,7 @@ section h2 {
     flex-shrink: 0;
 }
 
-/* === SCROLL TO TOP (derecha, encima del chat) === */
+/* === SCROLL TO TOP === */
 .scroll-to-top-btn {
     position: fixed;
     bottom: 88px;
@@ -578,9 +579,16 @@ section h2 {
         padding-top: 72px;
     }
 
+    /* Hero más bajo en tablet/móvil para no ocupar toda la pantalla */
     .hero-video-section {
         margin-top: -72px;
-        min-height: 420px;
+        height: 58vh;
+        min-height: 320px;
+        max-height: 460px;
+    }
+
+    .hero-card {
+        padding: 1.75rem 1.35rem;
     }
 
     .navbar-collapse {
@@ -625,12 +633,28 @@ section h2 {
 }
 
 @media (max-width: 575.98px) {
+    .hero-video-section {
+        height: 52vh;
+        min-height: 280px;
+        max-height: 400px;
+    }
+
     .hero-card {
-        padding: 1.5rem 1.25rem;
+        padding: 1.35rem 1.1rem;
     }
 
     .hero-card h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+    }
+
+    .hero-card .lead {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-card .btn-lg {
+        padding: 0.55rem 1.1rem;
+        font-size: 1rem;
     }
 
     section h2 {
