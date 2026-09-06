@@ -137,7 +137,6 @@ main {
     top: auto;
 }
 
-/* Estado abierto (X) */
 .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
@@ -188,18 +187,34 @@ main {
     z-index: -99;
 }
 
-.hero-video-section .carousel {
+.hero-video-section .container {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+}
+
+#heroCardCarousel {
     width: 100%;
 }
 
+#heroCardCarousel .carousel-inner {
+    display: flex;
+    align-items: center;
+}
+
+#heroCardCarousel .carousel-item {
+    float: none;
+    margin: 0 auto;
+}
+
 .hero-card {
-    background: rgba(42, 42, 42, 0.4);
+    background: rgba(42, 42, 42, 0.45);
     border: 1px solid var(--border-color);
     padding: 2.5rem;
     border-radius: 15px;
     text-align: center;
-    max-width: 700px;
-    margin: auto;
+    max-width: 640px;
+    margin: 0 auto;
     backdrop-filter: blur(6px);
 }
 
@@ -209,7 +224,13 @@ main {
 
 .hero-video-section .carousel-control-prev,
 .hero-video-section .carousel-control-next {
-    width: 5%;
+    width: 8%;
+    opacity: 0.7;
+}
+
+.hero-video-section .carousel-control-prev:hover,
+.hero-video-section .carousel-control-next:hover {
+    opacity: 1;
 }
 
 /* === BOTONES === */
@@ -579,7 +600,6 @@ section h2 {
         padding-top: 72px;
     }
 
-    /* Hero más bajo en tablet/móvil para no ocupar toda la pantalla */
     .hero-video-section {
         margin-top: -72px;
         height: 58vh;
@@ -588,7 +608,8 @@ section h2 {
     }
 
     .hero-card {
-        padding: 1.75rem 1.35rem;
+        padding: 1.6rem 1.25rem;
+        max-width: 92%;
     }
 
     .navbar-collapse {
@@ -640,21 +661,22 @@ section h2 {
     }
 
     .hero-card {
-        padding: 1.35rem 1.1rem;
+        padding: 1.25rem 1rem;
+        max-width: 94%;
     }
 
     .hero-card h1 {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
     }
 
     .hero-card .lead {
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
+        font-size: 0.92rem;
+        margin-bottom: 0.9rem;
     }
 
     .hero-card .btn-lg {
-        padding: 0.55rem 1.1rem;
-        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
     }
 
     section h2 {

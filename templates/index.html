@@ -7,8 +7,12 @@
         <source src="{{ url_for('static', filename='videos/placeholder.mp4') }}" type="video/mp4">
     </video>
 
-    <div class="container h-100">
-        <div id="heroCardCarousel" class="carousel slide h-100 d-flex align-items-center">
+    <div class="container h-100 d-flex align-items-center justify-content-center">
+        <div id="heroCardCarousel"
+             class="carousel slide w-100"
+             data-bs-ride="carousel"
+             data-bs-interval="6000"
+             data-bs-pause="hover">
             <div class="carousel-inner">
                 <!-- Card Slide 1 -->
                 <div class="carousel-item active">
@@ -38,11 +42,11 @@
 
             <button class="carousel-control-prev" type="button" data-bs-target="#heroCardCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Anterior</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#heroCardCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Siguiente</span>
             </button>
         </div>
     </div>
@@ -159,7 +163,7 @@
     </div>
 </section>
 
-<!-- Welcome Modal (contenido escapado para evitar XSS) -->
+<!-- Welcome Modal -->
 {% if popup %}
 <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
