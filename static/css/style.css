@@ -1,15 +1,17 @@
 /* === VARIABLES DE COLOR (Constructora Asolca) === */
 :root {
     --primary-blue: #0963AD;
-    --primary-yellow: #fecb00; /* Color amarillo original restaurado */
+    --primary-yellow: #fecb00;
     --primary-gray: #676D6D;
     --primary-black: #4C4F4E;
     --text-light: #ffffff;
     --text-dark: #333333;
     --border-color: #555;
+    --footer-link: #9ec9f0;
+    --footer-link-hover: #ffffff;
 }
 
-/* === RESETEO Y GLOBALES === */
+/* === GLOBALES === */
 body {
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
@@ -28,13 +30,13 @@ h1, h2, h3, h4, h5, h6, .footer-heading {
     margin: auto;
 }
 
-/* === HEADER Y NAVBAR (CON LOGO COLGANTE v3) === */
+/* === HEADER / NAVBAR === */
 header {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1030; /* Bootstrap navbar default z-index */
-    transition: transform 0.3s ease-in-out;
+    z-index: 1030;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 header.navbar-hidden {
@@ -45,41 +47,43 @@ header.navbar-hidden {
 
 header .navbar {
     background-color: var(--primary-black);
-    height: 80px; /* Altura fija para la barra */
-    position: relative; /* Contexto para posicionar el logo */
+    height: 80px;
+    position: relative;
 }
 
 .navbar-brand {
     background-color: #ffffff;
-    padding: 0.1rem;
+    padding: 0.25rem 0.4rem;
     border-radius: 0.375rem;
     line-height: 1;
     z-index: 10;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    
-    /* Posicionamiento absoluto para que no afecte la altura del navbar */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     position: absolute;
-    top: 0; /* Lo anclamos a la parte superior del navbar relativo */
-    transform: translateY(15px); /* Mantenemos el efecto de 'colgar' */
+    top: 0;
+    transform: translateY(12px);
+    max-width: min(280px, 70vw);
 }
 
 .navbar-logo {
-    height: 90px; /* Logo más grande */
+    height: 70px;
     width: auto;
+    max-width: 100%;
+    object-fit: contain;
     vertical-align: middle;
+    display: block;
 }
 
-/* Espacio para que el contenido principal no inicie debajo del header pegajoso */
 main {
-    padding-top: 80px; /* Reducido */
+    padding-top: 80px;
 }
 
 .navbar-dark .navbar-nav .nav-link {
     color: var(--text-light);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     transition: color 0.3s;
+    padding: 0.5rem 0.85rem;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
@@ -87,18 +91,67 @@ main {
     color: var(--primary-yellow);
 }
 
-.navbar-dark .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
+/* Hamburger → X animado */
 .navbar-toggler {
-    border-color: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 0.4rem 0.55rem;
+    border-radius: 0.35rem;
 }
 
 .navbar-toggler:focus {
-    box-shadow: 0 0 0 0.25rem rgba(254, 203, 0, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(254, 203, 0, 0.45);
 }
 
+.navbar-toggler-icon {
+    background-image: none !important;
+    position: relative;
+    width: 1.4em;
+    height: 1.4em;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after,
+.navbar-toggler-icon span {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #fff;
+    border-radius: 1px;
+    transition: transform 0.25s ease, opacity 0.25s ease, top 0.25s ease;
+}
+
+.navbar-toggler-icon::before {
+    top: 0.25em;
+}
+
+.navbar-toggler-icon span {
+    top: 50%;
+    transform: translateY(-50%);
+    display: block;
+}
+
+.navbar-toggler-icon::after {
+    bottom: 0.25em;
+    top: auto;
+}
+
+/* Estado abierto (X) */
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon span {
+    opacity: 0;
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+}
 
 /* === HERO VIDEO === */
 .hero-video-section {
@@ -109,7 +162,7 @@ main {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-top: -80px; /* Ajustado para el nuevo padding */
+    margin-top: -80px;
 }
 
 #bgvideo {
@@ -125,14 +178,10 @@ main {
     background-size: cover;
 }
 
-/* Overlay oscuro sobre el video para legibilidad */
 .hero-video-section::before {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: -99;
 }
@@ -142,18 +191,18 @@ main {
 }
 
 .hero-card {
-    background: rgba(42, 42, 42, 0.35);
+    background: rgba(42, 42, 42, 0.4);
     border: 1px solid var(--border-color);
     padding: 2.5rem;
     border-radius: 15px;
     text-align: center;
     max-width: 700px;
     margin: auto;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
 }
 
 .hero-card h1 {
-    color: var(--primary-yellow); /* Títulos en amarillo */
+    color: var(--primary-yellow);
 }
 
 .hero-video-section .carousel-control-prev,
@@ -161,7 +210,7 @@ main {
     width: 5%;
 }
 
-/* === BOTONES (Estilo Asolca) === */
+/* === BOTONES === */
 .btn-primary {
     background-color: var(--primary-blue);
     border-color: var(--primary-blue);
@@ -198,10 +247,10 @@ section h2 {
     text-align: center;
     margin-bottom: 3rem;
     font-size: 2.5rem;
-    color: var(--primary-yellow); /* Títulos en amarillo */
+    color: var(--primary-yellow);
 }
 
-/* === TARJETAS (Servicios, Proyectos) === */
+/* === TARJETAS === */
 .card {
     background: var(--primary-gray);
     border: 1px solid var(--border-color);
@@ -220,42 +269,38 @@ section h2 {
 }
 
 .card-title {
-    color: var(--primary-yellow); /* Títulos en amarillo */
+    color: var(--primary-yellow);
 }
 
 .card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Espaciado para las columnas de las tarjetas */
-.services-preview .col-md-4 {
-    margin-bottom: 1.5rem;
-}
-
+.services-preview .col-md-4,
 .projects-preview .col-md-4 {
     margin-bottom: 1.5rem;
 }
 
-/* === TESTIMONIOS === */
-.testimonials-preview .card {
-    background: transparent;
-    border: none;
+.services-preview .card .btn {
+    background-color: var(--primary-yellow);
+    color: var(--primary-black);
+    border-color: var(--primary-yellow);
+    font-weight: bold;
 }
 
-.testimonials-preview .blockquote-footer {
-    color: var(--primary-blue);
+.services-preview .card .btn:hover {
+    background-color: #d3ab00;
+    border-color: #c69f00;
+    color: var(--primary-black);
 }
 
-/* === CTA (Call to Action) === */
+/* === CTA === */
 .cta {
     background-color: var(--primary-blue);
 }
 
-.cta h2 {
-    color: var(--text-light);
-}
-
+.cta h2,
 .cta p {
     color: var(--text-light);
 }
@@ -266,8 +311,6 @@ section h2 {
 }
 
 /* === FORMULARIOS === */
-
-/* Estilo para los campos de formulario en modo oscuro */
 .form-control.bg-dark,
 .form-select.bg-dark {
     border-color: var(--border-color);
@@ -281,15 +324,10 @@ section h2 {
     box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.25);
 }
 
-/*
- * Corrige el color de la flecha del dropdown en fondos oscuros.
- * El SVG por defecto de Bootstrap es oscuro y no se ve.
- */
 .form-select.bg-dark {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23cccccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 
-/* Color del placeholder para inputs oscuros */
 .form-control.bg-dark::placeholder {
     color: #888;
 }
@@ -297,78 +335,87 @@ section h2 {
 /* === FOOTER === */
 .site-footer {
     background-color: #1a1a1a;
-    color: #ccc;
+    color: #ddd;
     padding: 4rem 0 2rem 0;
+    overflow: hidden;
 }
 
 .footer-logo {
-    max-height: 100px;
+    max-height: 80px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     background-color: #ffffff;
-    padding: 0.5rem; 
+    padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
+    display: block;
 }
 
 .footer-description {
-    font-size: 0.9rem;
-    color: #aaa;
+    font-size: 0.95rem;
+    color: #c8c8c8;
+    line-height: 1.6;
+    margin-top: 0.75rem;
 }
 
+/* Enlaces del footer: mejor contraste sobre fondo oscuro */
 .site-footer a {
-    color: var(--primary-blue);
+    color: var(--footer-link);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: color 0.25s;
 }
 
 .site-footer a:hover {
-    color: var(--text-light);
+    color: var(--footer-link-hover);
+    text-decoration: underline;
 }
 
 .footer-heading {
-    font-size: 1.2rem;
-    color: var(--text-light);
-    margin-bottom: 1.5rem;
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-bottom: 1.25rem;
 }
 
 .footer-links li {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.65rem;
 }
 
-/* Estilos para el formulario en el footer */
 .site-footer .form-control,
 .site-footer .form-select {
-    background-color: #333;
+    background-color: #2a2a2a;
     border: 1px solid var(--border-color);
     color: var(--text-light);
 }
 
 .site-footer .form-control::placeholder {
-    color: #888;
+    color: #999;
 }
 
 .site-footer .form-control:focus,
 .site-footer .form-select:focus {
-    background-color: #333;
+    background-color: #2a2a2a;
     color: var(--text-light);
     border-color: var(--primary-blue);
-    box-shadow: 0 0 0 0.25rem rgba(9, 99, 173, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(9, 99, 173, 0.25);
 }
 
 .footer-bottom {
-    border-top: 1px solid var(--border-color);
-    color: #888;
+    border-top: 1px solid #333;
+    color: #999;
     font-size: 0.9rem;
 }
 
-/* === BOTÓN FLOTANTE DE CHAT === */
+/* === BOTÓN CHAT FLOTANTE === */
 #chat-float-button {
     position: fixed;
-    bottom: 25px;
-    right: 25px;
+    bottom: 24px;
+    right: 20px;
     background-color: var(--primary-blue);
     color: var(--text-light);
     font-weight: bold;
-    font-size: 1rem;
-    padding: 12px 20px;
+    font-size: 0.95rem;
+    padding: 12px 18px;
     border-radius: 50px;
     display: flex;
     align-items: center;
@@ -376,21 +423,62 @@ section h2 {
     text-decoration: none;
     z-index: 1050;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
 }
 
 #chat-float-button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.4);
     color: var(--text-light);
 }
 
 #chat-float-button svg {
     vertical-align: middle;
+    flex-shrink: 0;
 }
 
-/* === MODAL DE BIENVENIDA === */
+/* === SCROLL TO TOP (derecha, encima del chat) === */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 88px;
+    right: 28px;
+    left: auto;
+    transform: none;
+    background-color: var(--primary-blue);
+    color: var(--text-light);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 1040;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: background-color 0.3s, transform 0.3s, opacity 0.3s, visibility 0.3s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.scroll-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top-btn:hover {
+    background-color: #07528a;
+    transform: translateY(-3px);
+    color: #fff;
+}
+
+.scroll-to-top-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* === MODAL === */
 .modal-papyrus {
-    background-color: rgba(40, 40, 40, 0.65);
+    background-color: rgba(40, 40, 40, 0.7);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border-color);
@@ -416,14 +504,12 @@ section h2 {
     border-top: 1px solid var(--border-color);
 }
 
-/* Botón azul con letras blancas */
 .btn-modal-custom {
     background-color: var(--primary-blue);
     border-color: var(--primary-blue);
     color: var(--text-light);
     font-weight: bold;
     padding: 0.5rem 1.5rem;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-modal-custom:hover {
@@ -432,95 +518,7 @@ section h2 {
     color: var(--text-light);
 }
 
-/* === FIX: Botones en tarjetas de servicios === */
-.services-preview .card .btn {
-    background-color: var(--primary-yellow);
-    color: var(--primary-black);
-    border-color: var(--primary-yellow);
-    font-weight: bold;
-}
-
-.services-preview .card .btn:hover {
-    background-color: #d3ab00; /* Un amarillo más oscuro para el efecto hover */
-    border-color: #c69f00;
-    color: var(--primary-black);
-}
-
-/* === BOTÓN SCROLL-TO-TOP === */
-.scroll-to-top-btn {
-    position: fixed;
-    bottom: 90px; /* Ajustado para no chocar con el botón de chat */
-    left: 50%; /* Centrar horizontalmente */
-    transform: translateX(-50%); /* Ajuste para centrado perfecto */
-    background-color: var(--primary-blue);
-    color: var(--text-light);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    text-decoration: none;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
-    opacity: 0; /* Oculto por defecto, JS lo mostrará */
-    visibility: hidden; /* Oculto por defecto, JS lo mostrará */
-}
-
-.scroll-to-top-btn.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(-5px);
-}
-
-.scroll-to-top-btn:hover {
-    background-color: #07528a;
-    transform: translateY(-5px);
-}
-
-.scroll-to-top-btn svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* Media query para ajustar la posición del botón en pantallas grandes */
-@media (min-width: 992px) {
-    .scroll-to-top-btn {
-        bottom: 40px; /* Más abajo en pantallas grandes */
-    }
-}
-
-/* === AJUSTES RESPONSIVE PARA NAVBAR (Pantallas Pequeñas) === */
-@media (max-width: 991.98px) {
-    header .navbar {
-        height: auto; /* Altura automática para acomodar el logo y el toggler */
-    }
-
-    .navbar-brand {
-        position: static; /* Devolver el logo al flujo normal del documento */
-        transform: none; /* Quitar el efecto colgante */
-        padding: 0.5rem 0; /* Ajustar padding */
-    }
-
-    .navbar-logo {
-        height: 50px; /* Reducir el tamaño del logo */
-    }
-
-    main {
-        padding-top: 70px; /* Ajustar el padding del contenido principal */
-    }
-
-    .navbar-collapse {
-        background-color: var(--primary-black); /* Fondo para el menú desplegado */
-        padding: 1rem;
-        border-radius: 0.375rem;
-        margin-top: 10px;
-    }
-}
-
-/* === SECCIÓN DE PROYECTOS (CON CARRUSEL) === */
+/* === PROYECTOS CARRUSEL === */
 .projects-preview {
     background-color: #222;
     background-image: url('https://www.transparenttextures.com/patterns/asfalt.png');
@@ -531,10 +529,7 @@ section h2 {
 .projects-preview::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
@@ -557,4 +552,100 @@ section h2 {
     bottom: 1rem;
     left: 5%;
     right: 5%;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 991.98px) {
+    header .navbar {
+        height: auto;
+        min-height: 64px;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+    }
+
+    .navbar-brand {
+        position: static;
+        transform: none;
+        padding: 0.35rem 0.45rem;
+        max-width: 200px;
+    }
+
+    .navbar-logo {
+        height: 44px;
+    }
+
+    main {
+        padding-top: 72px;
+    }
+
+    .hero-video-section {
+        margin-top: -72px;
+        min-height: 420px;
+    }
+
+    .navbar-collapse {
+        background-color: #1f1f1f;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        border: 1px solid #333;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.65rem 0.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .navbar-nav .nav-item:last-child .nav-link {
+        border-bottom: none;
+    }
+
+    .footer-logo {
+        max-height: 64px;
+        max-width: 220px;
+    }
+
+    #chat-float-button {
+        right: 14px;
+        bottom: 18px;
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
+
+    .scroll-to-top-btn {
+        right: 20px;
+        bottom: 78px;
+        width: 42px;
+        height: 42px;
+    }
+
+    #projectCarousel .carousel-item img {
+        height: 280px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .hero-card {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .hero-card h1 {
+        font-size: 1.6rem;
+    }
+
+    section h2 {
+        font-size: 1.75rem;
+    }
+
+    #chat-float-button span {
+        display: none;
+    }
+
+    #chat-float-button {
+        width: 52px;
+        height: 52px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
+    }
 }

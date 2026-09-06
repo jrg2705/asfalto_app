@@ -1,39 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Sitio cargado correctamente 🚀");
-
-    // Animación de scroll suave en botones
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    // Scroll suave para anclas internas
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
         anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute("href"))
-                .scrollIntoView({ behavior: "smooth" });
+            var targetId = this.getAttribute("href");
+            if (!targetId || targetId === "#") return;
+            var target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth" });
+            }
         });
     });
 
-    // Lógica para ocultar/mostrar la barra de navegación en scroll
+    // Ocultar / mostrar navbar al hacer scroll
     var lastScrollTop = 0;
-    var navbar = document.querySelector('header'); // Selecciona el elemento header
-    console.log("Navbar element:", navbar);
-    var navbarHeight = navbar.offsetHeight;
-    console.log("Navbar height:", navbarHeight);
-    var scrollUpThreshold = 100; // Pixeles para scroll hacia arriba antes de mostrar la navbar
+    var navbar = document.querySelector("header");
+    if (!navbar) return;
 
-    window.addEventListener('scroll', function() {
+    var navbarHeight = navbar.offsetHeight || 80;
+    var scrollUpThreshold = 80;
+
+    window.addEventListener("scroll", function () {
         var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
         if (currentScroll > lastScrollTop && currentScroll > navbarHeight) {
-            // Scrolling down
-            if (!navbar.classList.contains('navbar-hidden')) {
-                navbar.classList.add('navbar-hidden');
-                console.log("Adding navbar-hidden class");
-            }
-        } else if (currentScroll < lastScrollTop && (currentScroll < (lastScrollTop - scrollUpThreshold) || currentScroll === 0)) {
-            // Scrolling up, and either scrolled up significantly or reached the very top
-            if (navbar.classList.contains('navbar-hidden')) {
-                navbar.classList.remove('navbar-hidden');
-                console.log("Removing navbar-hidden class");
-            }
+            navbar.classList.add("navbar-hidden");
+        } else if (
+            currentScroll < lastScrollTop &&
+            (currentScroll < lastScrollTop - scrollUpThreshold || currentScroll <= 0)
+        ) {
+            navbar.classList.remove("navbar-hidden");
         }
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Para evitar valores negativos
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     });
 });
