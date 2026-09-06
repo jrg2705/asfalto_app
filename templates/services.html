@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Page Header -->
-<section class="page-header text-center py-5 bg-dark text-white">
+<section class="page-header">
     <div class="container">
-        <h1 class="display-4">Nuestros Servicios</h1>
-        <p class="lead">Soluciones profesionales y duraderas para todo tipo de proyectos de asfalto.</p>
+        <h1>Nuestros Servicios</h1>
+        <p class="lead">Soluciones profesionales y duraderas para proyectos de pavimentación y construcción.</p>
     </div>
 </section>
 
-<!-- Services List -->
 <section class="services-list py-5">
     <div class="container">
+        {% if services %}
         <div class="row gy-4">
             {% for service in services %}
             <div class="col-lg-6">
@@ -19,21 +18,25 @@
                     <div class="card-body d-flex flex-column">
                         <div class="d-flex align-items-center mb-3">
                             {% if service.icon_url %}
-                            <img src="{{ service.icon_url }}" alt="{{ service.title }}" class="me-3" style="width: 50px; height: 50px;">
+                            <img src="{{ service.icon_url }}" alt="{{ service.title }}" class="me-3" style="width: 48px; height: 48px; object-fit: contain;">
                             {% endif %}
                             <h3 class="card-title mb-0">{{ service.title }}</h3>
                         </div>
-                        <p class="card-text flex-grow-1">{{ service.description }}</p>
-                        <a href="{{ url_for('contact') }}" class="btn btn-sm btn-primary align-self-start">Solicitar Cotización</a>
+                        <p class="card-text flex-grow-1 text-muted" style="color: var(--text-muted) !important;">{{ service.description }}</p>
+                        <a href="{{ url_for('contact') }}" class="btn btn-sm btn-primary align-self-start mt-2">Solicitar Cotización</a>
                     </div>
                 </div>
             </div>
-            {% else %}
-            <div class="col">
-                <p class="text-center">No hay servicios para mostrar en este momento. Por favor, vuelve a consultar más tarde.</p>
-            </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon" aria-hidden="true">🛠️</div>
+            <h3>Servicios en preparación</h3>
+            <p>Estamos cargando nuestro catálogo de servicios. Mientras tanto, contáctanos para una cotización personalizada.</p>
+            <a href="{{ url_for('contact') }}" class="btn btn-primary btn-sm">Contactar ahora</a>
+        </div>
+        {% endif %}
     </div>
 </section>
 
